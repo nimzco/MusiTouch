@@ -17,53 +17,56 @@ var Menu = new Class({
      * menuNames: ["Menu 1", "Menu 2", "Option", ...]
      * canvasID: "canvas"
      */
-    initialize: function(menuNames, canvasID, options){
+    initialize: function(menuNames, paper, options){
         this.setOptions(options);
         this.changeMenuTimeoutID;
         this.menuNames = menuNames;
         this.nbMenu    = menuNames.length;
-        this.paper     = Raphael(canvasID, 0, 0);
+        this.paper     = paper; 
+        this.paper.clear();
         this.menuRects = []; this.menuTexts = [];
         for (var i = 0; i < this.nbMenu; i += 1) {
             this.menuRects.push(this.paper.rect(0,0,0,0,3));
             this.menuRects[i].attr('fill', this.options.menuColor);
             this.menuTexts.push(this.paper.text(0,0, this.menuNames[i]));
         }
-        this.refreshSize();
+        this.draw();
 
-        window.onresize = this.refreshSize.bind(this);
+        window.onresize = this.draw.bind(this);
 
         this.handleMouseOver();
 
         this.launchChangeMenuSelection();
+        
+        this.musiTouchClickHandler();
     },
 
     /*
      * Adapt the size of the canvas regarding the window size.
      */
-    refreshSize: function() {
+    draw: function() {
         // Set new Height and Width of the browser's window
-        this.windowHeight = window.innerHeight;
-        this.windowWidth  = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        var windowWidth  = window.innerWidth;
         // Compute size of the Canvas again
-        this.canvasHeight = this.windowHeight * .99; // 99% to prevent scrollbars
-        this.canvasWidth  = this.windowWidth * .99; 
+        var canvasHeight = windowHeight * .99; // 99% to prevent scrollbars
+        var canvasWidth  = windowWidth * .99; 
 
         // Compute all sizes again
-        this.menuSpacing = this.canvasHeight  * this.options.menuSpacing;
-        this.menuHeight  = (this.canvasHeight - (this.nbMenu + 1) * this.menuSpacing) / this.nbMenu;
-        this.menuWidth   = this.canvasWidth   * this.options.menuWidth;
-        var menuX        = (this.canvasWidth  - this.menuWidth) / 2;
-        this.fontSize    = this.menuHeight    * this.options.fontSize;
-        this.paper.setSize(this.canvasWidth, this.canvasHeight);
+        var menuSpacing = canvasHeight  * this.options.menuSpacing;
+        var menuHeight  = (canvasHeight - (this.nbMenu + 1) * menuSpacing) / this.nbMenu;
+        var menuWidth   = canvasWidth   * this.options.menuWidth;
+        var menuX       = (canvasWidth  - menuWidth) / 2;
+        this.fontSize   = menuHeight    * this.options.fontSize;
+        this.paper.setSize(canvasWidth, canvasHeight);
 
         for (var i = 0; i < this.nbMenu; i += 1) {
             this.menuRects[i].attr('x', menuX);
-            this.menuRects[i].attr('y', this.menuSpacing + (i * (this.menuHeight + this.menuSpacing)));
-            this.menuRects[i].attr('width', this.menuWidth);
-            this.menuRects[i].attr('height', this.menuHeight);
-            this.menuTexts[i].attr('x', this.canvasWidth / 2);
-            this.menuTexts[i].attr('y', this.menuSpacing + (this.menuHeight / 2) + i * (this.menuHeight + this.menuSpacing));
+            this.menuRects[i].attr('y', menuSpacing + (i * (menuHeight + menuSpacing)));
+            this.menuRects[i].attr('width', menuWidth);
+            this.menuRects[i].attr('height', menuHeight);
+            this.menuTexts[i].attr('x', canvasWidth / 2);
+            this.menuTexts[i].attr('y', menuSpacing + (menuHeight / 2) + i * (menuHeight + menuSpacing));
             this.menuTexts[i].attr('font-size', this.fontSize);
         }
     },
@@ -112,6 +115,21 @@ var Menu = new Class({
             currentMenuSelection = (currentMenuSelection == this.nbMenu - 1 ? 0 : currentMenuSelection + 1);
         }.bind(this);
         this.changeMenuTimeoutID = setInterval(changeMenuSelection, this.options.menuIntervalTime);
+    },
+    
+    musiTouchClickHandler: function() {
+        this.menuRects[0].click(function() { var game = new Game(6, this.paper); });
+        this.menuTexts[0].click(function() { var game = new Game(6, this.paper); });
+
+        this.menuRects[1].click(function() { var game = new Game(4, this.paper); });
+        this.menuTexts[1].click(function() { var game = new Game(4, this.paper); });
+
+        this.menuRects[2].click(function() { var game = new Game(6, this.paper); });
+        this.menuTexts[2].click(function() { var game = new Game(6, this.paper); });
+
+        this.menuRects[3].click(function() { var game = new Game(6, this.paper); });
+        this.menuTexts[3].click(function() { var game = new Game(6, this.paper); });
+
     }
 
 });

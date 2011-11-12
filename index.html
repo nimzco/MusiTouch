@@ -10,11 +10,13 @@
   <script src='JavaScript/libs/mootools-min.js' type='text/javascript'></script>
   <script src='JavaScript/libs/raphael-min.js' type='text/javascript'></script>
   <script src='JavaScript/Menu.js' type='text/javascript'></script>
+  <script src='JavaScript/Game.js' type='text/javascript'></script>
 </head>
 <body>  
   <div id='canvas'></div>
   <script type='text/javascript'>
-    var menu = new Menu(['Libre', 'Facile', 'Moyen', 'Difficile', 'Instructions'], 'canvas');
+    var paper = Raphael("canvas", 0, 0);
+    var menu = new Menu(['Libre', 'Facile', 'Moyen', 'Difficile', 'Instructions'], paper);
   </script
 </body>  
   
