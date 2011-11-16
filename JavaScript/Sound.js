@@ -3,17 +3,17 @@ var Sound = new Class({
     Implements: [Options, Events],
 
     options: {
-        instrument: 'piano', // Distance between squares in %
+        instrument: 'piano'
     },
     
-    initialize: function(nbSquare, paper, options){
+    initialize: function(audio_id, options){
         this.setOptions(options);
+        this.audio_id = audio_id;
+        console.log(this);
     },
     
     playSound: function() {
-      var sound = document.getElementById('audio');
-      var sound1 = document.getElementById('audio1');
+      var sound = document.getElementById(this.audio_id);
       sound.play();
-      sound1.play();
     }
 });

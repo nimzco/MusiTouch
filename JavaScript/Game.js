@@ -7,12 +7,32 @@ var Game = new Class({
         squareColor : '#AAE'
     }, 
     initialize: function(nbSquare, paper, options){
+/*
+        window.NOTES = { do:"Do", 
+                         re:"Re", 
+                         mi: "Mi", 
+                         fa: "Fa", 
+                         sol: "Sol", 
+                         la: "La", 
+                         si: "Si"}
+*/
+        window.NOTES = ["Do", 
+                        "Do_d",
+                        "Re",
+                        "Re_d", 
+                        "Mi", 
+                        "Fa", 
+                        "Fa_d",
+                        "Sol", 
+                        "Sol_d",
+                        "La",
+                        "La_d", 
+                        "Si"];
         this.setOptions(options);
         this.nbSquare = nbSquare;
         this.paper    = paper;
         this.paper.clear();
         this.squares = []
-        var sound = new Sound();
         for (var i = 0; i < this.nbSquare; i += 1) {
             var tmpCase = new Case(this.paper);
             this.squares.push(tmpCase);
