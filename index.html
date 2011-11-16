@@ -11,13 +11,21 @@
   <script src='JavaScript/libs/raphael-min.js' type='text/javascript'></script>
   <script src='JavaScript/Menu.js' type='text/javascript'></script>
   <script src='JavaScript/Game.js' type='text/javascript'></script>
+  <script src='JavaScript/Sound.js' type='text/javascript'></script>
+  <script src='JavaScript/Case.js' type='text/javascript'></script>
 </head>
 <body>  
   <div id='canvas'></div>
   <script type='text/javascript'>
     var paper = Raphael("canvas", 0, 0);
     var menu = new Menu(['Libre', 'Facile', 'Moyen', 'Difficile', 'Instructions'], paper);
-  </script
+  </script>
+  <div id="audio_wrapper">
+  
+  </div>
+  <audio id="audio" src="sounds/Do.mp3" preload="auto" autobuffer>
+  <audio id="audio1" src="sounds/Mi.mp3" preload="auto" autobuffer>
+</audio>
 </body>  
   
 </html>  

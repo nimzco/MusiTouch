@@ -127,8 +127,8 @@ var Menu = new Class({
         this.menuRects[2].click(function() { var game = new Game(6, this.paper); });
         this.menuTexts[2].click(function() { var game = new Game(6, this.paper); });
 
-        this.menuRects[3].click(function() { var game = new Game(6, this.paper); });
-        this.menuTexts[3].click(function() { var game = new Game(6, this.paper); });
+        this.menuRects[3].click(function() { var game = new Game(12, this.paper); });
+        this.menuTexts[3].click(function() { var game = new Game(12, this.paper); });
 
     }
 
