@@ -3,7 +3,7 @@ var Case = new Class({
     Implements: [Options, Events],
 
     options: {
-        color : '#AAE'
+        color : '#ce168e'
     }, 
     initialize: function(paper, note, options) {
         this.setOptions(options);
@@ -15,7 +15,7 @@ var Case = new Class({
         this.rect = this.paper.rect(0,0,0,0,3);
         this.rect.attr('fill', this.options.color);
         var sound = new Sound(this.uuid);
-        this.rect.click(sound.playSound.bind(sound));        
+        this.rect[0].addEvent('click', sound.playSound.bind(sound));        
     },
     
     getRect: function() {

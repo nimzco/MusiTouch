@@ -34,7 +34,7 @@ var Game = new Class({
         this.paper.clear();
         this.squares = []
         for (var i = 0; i < this.nbSquare; i += 1) {
-            var tmpCase = new Case(this.paper);
+            var tmpCase = new Case(this.paper, NOTES[i]);
             this.squares.push(tmpCase);
         }
         this.draw();
