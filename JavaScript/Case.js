@@ -10,12 +10,12 @@ var Case = new Class({
         var audioWrapper = document.getElementById('audio_wrapper');
         this.note = (note ? note : NOTES[Math.round((Math.random()*10)+1)]);
         this.uuid = this.guidGenerator();
-        audioWrapper.innerHTML += "<audio id=" + this.uuid + " src=\"sounds/"+ this.note + ".mp3\" preload=\"auto\" autobuffer>";
+        audioWrapper.innerHTML += "<audio id=" + this.uuid + " src=\"sounds/"+ this.note + ".mp3\" preload=\"auto\" autobuffer hidden=\"true\">";
         this.paper = paper;
         this.rect = this.paper.rect(0,0,0,0,3);
-        this.rect.attr('fill', this.options.color);
+        this.rect.attr('fill', this.options.color);        
         var sound = new Sound(this.uuid);
-        this.rect[0].addEvent('click', sound.playSound.bind(sound));        
+        this.rect[0].addEvent('click', sound.playSound.bind(sound));
     },
     
     getRect: function() {
@@ -28,4 +28,5 @@ var Case = new Class({
       };
       return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
     }
+  
 });

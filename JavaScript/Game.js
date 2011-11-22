@@ -28,13 +28,16 @@ var Game = new Class({
                         "La",
                         "La_d", 
                         "Si"];
+                        
+        window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
+        window.COLORS.sort(Math.round(Math.random())-0.5);
         this.setOptions(options);
         this.nbSquare = nbSquare;
         this.paper    = paper;
         this.paper.clear();
         this.squares = []
         for (var i = 0; i < this.nbSquare; i += 1) {
-            var tmpCase = new Case(this.paper, NOTES[i]);
+            var tmpCase = new Case(this.paper, NOTES[i], {color: COLORS[i]});
             this.squares.push(tmpCase);
         }
         this.draw();
