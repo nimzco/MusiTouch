@@ -6,7 +6,8 @@ var Game = new Class({
         squareMargin: 0.02, // Distance between squares in %
         squareColor : '#AAE'
     }, 
-    initialize: function(nbSquare, paper, options){
+    initialize: function(nbSquare, paper, menu, options){
+        this.menu = menu;
 /*
         window.NOTES = { do:"Do", 
                          re:"Re", 
@@ -42,9 +43,6 @@ var Game = new Class({
         }
         this.draw();
         window.onresize = this.draw.bind(this);
-        
-        this.handleEscapeTouch();
-        
     }, 
 
     /*
@@ -78,10 +76,5 @@ var Game = new Class({
                this.squares[currentSquare].getRect().attr('height', squareHeight);
            }
        }
-    },
-    handleEscapeTouch: function() {
-      paper.canvas.parentElement.onKeyPress = function(event) {
-        var keyunicode = e.charCode || e.keyCode
-      }
     }
 });

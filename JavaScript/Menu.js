@@ -15,7 +15,7 @@ var Menu = new Class({
     },
     /*
      * menuNames: ["Menu 1", "Menu 2", "Option", ...]
-     * canvasID: "canvas"
+     * paper    : Raphael Object
      */
     initialize: function(menuNames, paper, options){
         this.setOptions(options);
@@ -23,13 +23,6 @@ var Menu = new Class({
         this.menuNames = menuNames;
         this.nbMenu    = menuNames.length;
         this.paper     = paper; 
-        this.paper.clear();
-        this.menuRects = []; this.menuTexts = [];
-        for (var i = 0; i < this.nbMenu; i += 1) {
-            this.menuRects.push(this.paper.rect(0,0,0,0,3));
-            this.menuRects[i].attr('fill', this.options.menuColor);
-            this.menuTexts.push(this.paper.text(0,0, this.menuNames[i]));
-        }
         this.draw();
 
         window.onresize = this.draw.bind(this);
@@ -39,12 +32,29 @@ var Menu = new Class({
         this.launchChangeMenuSelection();
         
         this.musiTouchClickHandler();
+        
     },
-
+    
+    reinitialize: function() {
+        clearInterval(this.changeMenuTimeoutID);
+        this.draw();  
+        this.handleMouseOver();
+        this.launchChangeMenuSelection();
+        this.musiTouchClickHandler();
+    },
+    
     /*
      * Adapt the size of the canvas regarding the window size.
      */
     draw: function() {
+        this.paper.clear();
+        this.menuRects = []; this.menuTexts = [];
+        for (var i = 0; i < this.nbMenu; i += 1) {
+            this.menuRects.push(this.paper.rect(0,0,0,0,3));
+            this.menuRects[i].attr('fill', this.options.menuColor);
+            this.menuTexts.push(this.paper.text(0,0, this.menuNames[i]));
+        }
+        
         // Set new Height and Width of the browser's window
         var windowHeight = window.innerHeight;
         var windowWidth  = window.innerWidth;
@@ -118,17 +128,26 @@ var Menu = new Class({
     },
     
     musiTouchClickHandler: function() {
-        this.menuRects[0].click(function() { var game = new Game(6, this.paper); });
-        this.menuTexts[0].click(function() { var game = new Game(6, this.paper); });
+        var paper = this.paper;
+        this.menuRects[0].click(function() { var game = new Game(6, paper); });
+        this.menuTexts[0].click(function() { var game = new Game(6, paper); });
+        $(this.menuRects[0][0]).onGesture('tap', function() { var game = new Game(6, paper); });
+        $(this.menuTexts[0][0]).onGesture('tap', function() { var game = new Game(6, paper); });
+        
+        this.menuRects[1].click(function() { var game = new Game(4, paper); });
+        this.menuTexts[1].click(function() { var game = new Game(4, paper); });
+        $(this.menuRects[1][0]).onGesture('tap', function() { var game = new Game(4, paper); });
+        $(this.menuTexts[1][0]).onGesture('tap', function() { var game = new Game(4, paper); });
 
-        this.menuRects[1].click(function() { var game = new Game(4, this.paper); });
-        this.menuTexts[1].click(function() { var game = new Game(4, this.paper); });
+        this.menuRects[2].click(function() { var game = new Game(6, paper); });
+        this.menuTexts[2].click(function() { var game = new Game(6, paper); });
+        $(this.menuRects[2][0]).onGesture('tap', function() { var game = new Game(6, paper); });
+        $(this.menuTexts[2][0]).onGesture('tap', function() { var game = new Game(6, paper); });
 
-        this.menuRects[2].click(function() { var game = new Game(6, this.paper); });
-        this.menuTexts[2].click(function() { var game = new Game(6, this.paper); });
-
-        this.menuRects[3].click(function() { var game = new Game(12, this.paper); });
-        this.menuTexts[3].click(function() { var game = new Game(12, this.paper); });
+        this.menuRects[3].click(function() { var game = new Game(12, paper); });
+        this.menuTexts[3].click(function() { var game = new Game(12, paper); });
+        $(this.menuRects[3][0]).onGesture('tap', function() { var game = new Game(12, paper); });
+        $(this.menuTexts[3][0]).onGesture('tap', function() { var game = new Game(12, paper); });
 
     }
 

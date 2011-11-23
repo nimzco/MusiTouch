@@ -13,6 +13,7 @@ var Sound = new Class({
     
     playSound: function() {
       var sound = document.getElementById(this.audio_id);
+      sound.currentTime = 0;
       sound.play();
     }
 });
