@@ -6,8 +6,15 @@ var Game = new Class({
         squareMargin: 0.02, // Distance between squares in %
         squareColor : '#AAE'
     }, 
-    initialize: function(nbSquare, paper, menu, options){
-        this.menu = menu;
+    initialize: function(nbSquare, paper, options){
+
+        window.MELODIES = [['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
+                           ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi']];
+        // Refers to a table
+        this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
+        // Refers where it has stopped in the melody
+        this.progression = 1;
+        this.first = true;
 /*
         window.NOTES = { do:"Do", 
                          re:"Re", 
@@ -17,19 +24,7 @@ var Game = new Class({
                          la: "La", 
                          si: "Si"}
 */
-        window.NOTES = ["Do", 
-                        "Do_d",
-                        "Re",
-                        "Re_d", 
-                        "Mi", 
-                        "Fa", 
-                        "Fa_d",
-                        "Sol", 
-                        "Sol_d",
-                        "La",
-                        "La_d", 
-                        "Si"];
-                        
+        window.NOTES = ["Do", "Do_d", "Re","Re_d", "Mi", "Fa", "Fa_d","Sol", "Sol_d", "La","La_d", "Si"];
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random())-0.5);
         this.setOptions(options);
@@ -43,8 +38,51 @@ var Game = new Class({
         }
         this.draw();
         window.onresize = this.draw.bind(this);
+        this.play();
     }, 
+    
+    play: function() {
+        // TODO block the click
+        
+        for (var i = 0; i < this.progression; i += 1) {
+            var noteToPlay = NOTES.indexOf(MELODIES[this.melodyNumber][i])
+            setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), 500 * i);
+        }
+        
+        this.listen();
+    },
 
+    listen: function() {
+        this.currentAdvance = 0;
+        if (this.first) {
+            for (var i = 0; i < this.squares.length; i += 1) {
+                this.squares[i].el.addEvent('click', function(i) {
+                    this.squares[i].play();
+                    // Check if the player has touched the right square
+                    // Note that has to be played
+                    var indexOfNoteToBePlayed = NOTES.indexOf(MELODIES[this.melodyNumber][this.currentAdvance])
+                    if (this.squares[i] === this.squares[indexOfNoteToBePlayed]) {
+                        console.log("Good");
+                        this.currentAdvance += 1;
+                        if (this.currentAdvance === this.progression) {
+                            this.progression += 1;
+                            setTimeout(this.play.bind(this), 1000);
+                            this.currentAdvance = 0;
+                            // TODO Show "Well done"
+                        }
+                    } else {
+                        console.log("Bad");
+                        this.currentAdvance = 0;
+                        setTimeout(this.play.bind(this), 1000);
+                        // TODO Show "Try Again"
+                    }
+                
+                }.bind(this, i));
+            }
+        }
+        this.first = false;
+    },
+    
     /*
      * Adapt the size of the canvas regarding the window size.
     */

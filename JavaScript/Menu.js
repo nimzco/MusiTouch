@@ -129,10 +129,13 @@ var Menu = new Class({
     
     musiTouchClickHandler: function() {
         var paper = this.paper;
-        this.menuRects[0].click(function() { var game = new Game(6, paper); });
-        this.menuTexts[0].click(function() { var game = new Game(6, paper); });
-        $(this.menuRects[0][0]).onGesture('tap', function() { var game = new Game(6, paper); });
-        $(this.menuTexts[0][0]).onGesture('tap', function() { var game = new Game(6, paper); });
+        // this.menuRects[0].click(function() { var game = new Game(6, paper); });
+        // this.menuTexts[0].click(function() { var game = new Game(6, paper); });
+        // 
+        $(this.menuRects[0][0]).addEvent('click', function() { var game = new Game(6, paper); console.log("tap")});
+        $(this.menuTexts[0][0]).addEvent('click', function() { var game = new Game(6, paper); });
+        $(this.menuRects[0][0]).addEvent('touchstart', function() { var game = new Game(6, paper); console.log("tap")});
+        $(this.menuTexts[0][0]).addEvent('touchstart', function() { var game = new Game(6, paper); });
         
         this.menuRects[1].click(function() { var game = new Game(4, paper); });
         this.menuTexts[1].click(function() { var game = new Game(4, paper); });
