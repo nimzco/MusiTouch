@@ -16,6 +16,8 @@ var Sound = new Class({
     },
     
     playSound: function() {
+      //buzz.all().pause();
+      this.sound.set('currentTime', 0);
       this.sound.play();
     }
 });
