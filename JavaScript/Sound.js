@@ -8,7 +8,7 @@ var Sound = new Class({
     
     initialize: function(note, options){
         this.setOptions(options);
-        this.note = note.contains('#') ? note.substr(0,2) + "_d" : note;
+        this.note = note.contains('#') ? note.substr(0, note.length - 1) + "_d" : note;
         this.sound = new buzz.sound( "sounds/" + this.note, {
           formats: [ "mp3" ],
           preload: true
