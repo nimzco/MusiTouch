@@ -17,11 +17,9 @@ var Square = new Class({
         this.rect.attr('fill', this.options.color);        
 
         this.sound = new Sound(numNote);
-        this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
-        this.rect[0].addEvent('touchstart', this.sound.playSound.bind(this.sound));
+        // this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
+        // this.rect[0].addEvent('touchstart', this.sound.playSound.bind(this.sound));
         this.rect.attr('fill', this.options.color);
-        
-
     },
     drawTextInsideRect: function() {
         var x      = this.el.x.baseVal.value;
