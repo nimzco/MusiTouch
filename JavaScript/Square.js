@@ -1,4 +1,4 @@
-var Case = new Class({
+var Square = new Class({
 
     Implements: [Options, Events],
 

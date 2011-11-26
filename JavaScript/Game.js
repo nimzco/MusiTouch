@@ -47,8 +47,8 @@ var Game = new Class({
         this.paper.clear();
         this.squares = []
         for (var i = 0; i < this.nbSquare; i += 1) {
-            var tmpCase = new Case(this.paper, NOTES[i], {color: COLORS[i]});
-            this.squares.push(tmpCase);
+            var tmpSquare = new Square(this.paper, NOTES[i], {color: COLORS[i]});
+            this.squares.push(tmpSquare);
         }
         this.draw();
         window.onresize = this.draw.bind(this);
