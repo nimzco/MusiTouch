@@ -8,8 +8,8 @@ var Menu = new Class({
         menuWidth     : .9,  // Width of a menu
         fontSize      : .8,  // Font size regarding the height of a menu.
         // Colors
-        menuColor     : '#AAE',
-        menuHoverColor: '#A00',
+        menuColor     : '#bfff00',
+        menuHoverColor: '#15007d',
         // Time
         menuIntervalTime: 1300 // ms
     },

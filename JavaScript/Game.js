@@ -20,7 +20,8 @@ var Game = new Class({
                  ['Do', 'Re']],
             6 : [['Do', 'Re'], 
                  ['Do', 'Re']],
-            12: [['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
+            12: [['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si'],
+                ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
                  ['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si']]
         };
 

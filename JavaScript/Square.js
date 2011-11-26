@@ -14,7 +14,8 @@ var Square = new Class({
         this.paper = paper;
         this.rect = this.paper.rect(0,0,0,0,3);
         this.el = this.rect[0];
-        this.rect.attr('fill', 'url(patterns/pat' + (numNote + 1) + '.png)');        
+        this.pattenURL = (numNote + 1);
+        this.rect.attr('fill', 'url(patterns/pat' + this.pattenURL + '.png)');        
         this.rect.hover(function(){
           this.attr('stroke-width', "10");
         },function (){
@@ -35,7 +36,7 @@ var Square = new Class({
         this.text = this.paper.text(x + width / 2, y + height / 2, this.note);
         this.text.attr('font-size', height * this.options.fontSize);
         this.text.attr('opacity', 0);
-        this.text.attr('fill', "#FFF");
+        this.text.attr('fill', "#00F");
         this.text.attr('stroke', "#000");
         this.text.attr('stroke-width', "3");
         this.text.hover(function(){
@@ -52,11 +53,11 @@ var Square = new Class({
     play: function() {
         this.text.attr('opacity', "1");
         //this.text.animate({opacity: 1}, this.options.animationTime)        
-        this.rect.animate({fill: "#FFF"}, this.options.animationTime);
+        this.rect.attr('fill', 'url(patterns/white.png)');        
         setTimeout(function() {
             this.rect.animate({fill: this.options.color}, this.options.animationTime);
             this.text.animate({opacity: 0}, this.options.animationTime - 150)
-
+            this.rect.attr('fill', 'url(patterns/pat' + this.pattenURL + '.png)');   
             }.bind(this), this.options.animationTime);
 
         this.sound.playSound();
