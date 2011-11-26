@@ -15,7 +15,7 @@ var Game = new Class({
         // Refers to a table
         this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
         // Refers where it has stopped in the melody
-        this.progression = 10;
+        this.progression = MELODIES[0].length;
         this.first = true;
 
         window.NOTES = ["Do", "Do#", "Re","Re#", "Mi", "Fa", "Fa#","Sol", "Sol#", "La","La#", "Si"];
