@@ -23,7 +23,8 @@ var Game = new Class({
           formats: [ "mp3" ],
           preload: true
         });
-        var iTime = 0;
+        /*
+var iTime = 0;
         window.EPPIC.bind("play", function(e) {
           iTime = new Date().getTime();
           window.first = false;  
@@ -32,12 +33,13 @@ var Game = new Class({
         window.EPPIC.bind("timeupdate", function(e) {
           //var timer = buzz.toTimer(this.getTime());
           var time = new Date().getTime();
-          //console.log(time - iTime); 
+          console.log(time - iTime); 
           //console.log(time - iTime >= 1500);
           if (time - iTime >= 1500) {
             window.EPPIC.pause();
           }
         });
+*/
         
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random())-0.5);
