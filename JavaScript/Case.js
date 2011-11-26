@@ -27,6 +27,11 @@ var Case = new Class({
     },
 
     play: function() {
+        this.rect.animate({fill: '#fff'}, 250);
+        setTimeout(function() {
+            this.rect.animate({fill: this.options.color}, 250);
+            }.bind(this), 250);
+        
         this.sound.playSound();
     }
   

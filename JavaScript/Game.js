@@ -3,8 +3,10 @@ var Game = new Class({
     Implements: [Options, Events],
 
     options: {
-        squareMargin: 0.02, // Distance between squares in %
-        squareColor : '#AAE'
+        squareMargin    : 0.02, // Distance between squares in %
+        squareColor     : '#AAE',
+        timeBetweenNotes: 500, // in ms
+        freegame        : false
     }, 
     initialize: function(nbSquare, paper, options){
 
@@ -15,15 +17,7 @@ var Game = new Class({
         // Refers where it has stopped in the melody
         this.progression = 1;
         this.first = true;
-/*
-        window.NOTES = { do:"Do", 
-                         re:"Re", 
-                         mi: "Mi", 
-                         fa: "Fa", 
-                         sol: "Sol", 
-                         la: "La", 
-                         si: "Si"}
-*/
+
         window.NOTES = ["Do", "Do_d", "Re","Re_d", "Mi", "Fa", "Fa_d","Sol", "Sol_d", "La","La_d", "Si"];
         window.EPPIC = new buzz.sound( "sounds/NOTESA", {
           formats: [ "mp3" ],
@@ -58,45 +52,61 @@ var Game = new Class({
         }
         this.draw();
         window.onresize = this.draw.bind(this);
-        this.play();
+        if (this.options.freegame) {
+            for (var i = 0; i < this.squares.length; i += 1) {
+                this.squares[i].el.addEvent('click', function(i) {
+                    this.squares[i].play();
+                }.bind(this,i));
+            }
+            
+        } else {
+            this.play();            
+        }
     }, 
-    
+
+    // Play the song that the gamer will have to reproduce
     play: function() {
-        // TODO block the click
-        
+        // This variable tells that the user cannnot click. He will be able to do so after the song has been played.
+        this.isPlaying = true;
+        setTimeout(function() { this.isPlaying = false; }.bind(this), this.progression * this.options.timeBetweenNotes);
+
         for (var i = 0; i < this.progression; i += 1) {
             var noteToPlay = NOTES.indexOf(MELODIES[this.melodyNumber][i])
-            setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), 500 * i);
+            setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.timeBetweenNotes * i);
         }
-        
         this.listen();
     },
 
     listen: function() {
         this.currentAdvance = 0;
         if (this.first) {
+            // For all squares
             for (var i = 0; i < this.squares.length; i += 1) {
+                // Add an event to listen the click
+                // The 'this' reference has been passed as the 'Game'
                 this.squares[i].el.addEvent('click', function(i) {
-                    this.squares[i].play();
-                    // Check if the player has touched the right square
-                    // Note that has to be played
-                    var indexOfNoteToBePlayed = NOTES.indexOf(MELODIES[this.melodyNumber][this.currentAdvance])
-                    if (this.squares[i] === this.squares[indexOfNoteToBePlayed]) {
-                        console.log("Good");
-                        this.currentAdvance += 1;
-                        if (this.currentAdvance === this.progression) {
-                            this.progression += 1;
-                            setTimeout(this.play.bind(this), 1000);
+                    // Only if the game is not playing sounds
+                    if (!this.isPlaying) {
+                        // Play the sound when clicked
+                        this.squares[i].play();
+                        // Check if the player has touched the right square
+                        // Note that has to be played
+                        var indexOfNoteToBePlayed = NOTES.indexOf(MELODIES[this.melodyNumber][this.currentAdvance])
+                        if (this.squares[i] === this.squares[indexOfNoteToBePlayed]) {
+                            this.currentAdvance += 1;
+                            if (this.currentAdvance === this.progression) {
+                                this.progression += 1;
+                                setTimeout(this.play.bind(this), 1000);
+                                this.currentAdvance = 0;
+                                // TODO Show "Well done"
+                            }
+                        } else {
                             this.currentAdvance = 0;
-                            // TODO Show "Well done"
-                        }
-                    } else {
-                        console.log("Bad");
-                        this.currentAdvance = 0;
-                        setTimeout(this.play.bind(this), 1000);
-                        // TODO Show "Try Again"
-                    }
-                
+                            this.isPlaying = true;
+                            setTimeout(this.play.bind(this), 1000);
+                            // TODO Show "Try Again"
+                        }   
+                    }                
                 }.bind(this, i));
             }
         }
