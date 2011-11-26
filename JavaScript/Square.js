@@ -15,7 +15,11 @@ var Square = new Class({
         this.rect = this.paper.rect(0,0,0,0,3);
         this.el = this.rect[0];
         this.rect.attr('fill', 'url(patterns/pat' + (numNote + 1) + '.png)');        
-
+        this.rect.hover(function(){
+          this.attr('stroke-width', "10");
+        },function (){
+          this.attr('stroke-width', "1");        
+        }, this.rect, this.rect);
 
         this.sound = new Sound(NOTES[nbNote][numNote]);
         // this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
@@ -34,6 +38,11 @@ var Square = new Class({
         this.text.attr('fill', "#FFF");
         this.text.attr('stroke', "#000");
         this.text.attr('stroke-width', "3");
+        this.text.hover(function(){
+          this.attr('stroke-width', "10");
+        },function (){
+          this.attr('stroke-width', "1");        
+        }, this.rect, this.rect);
     },
     
     getRect: function() {
