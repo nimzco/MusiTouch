@@ -9,9 +9,18 @@ var Game = new Class({
         freegame        : false,
     }, 
     initialize: function(nbSquare, paper, options){
+        
+        window.NOTES_4 = [];
+        window.NOTES_6 = [];
+        window.NOTES_12 = [];
+        
 
-        window.MELODIES = [['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
-                           ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi']];
+
+
+
+
+        window.MELODIES = [['Do', 'Re'],
+                           ['Do', 'Re']];
         // Refers to a table
         this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
         // Refers where it has stopped in the melody
@@ -57,12 +66,11 @@ var Game = new Class({
         // This variable tells that the user cannnot click. He will be able to do so after the song has been played.
         this.isPlaying = true;
         setTimeout(function() { this.isPlaying = false; }.bind(this), this.progression * this.options.timeBetweenNotes);
-
         for (var i = 0; i < this.progression; i += 1) {
             var noteToPlay = NOTES.indexOf(MELODIES[this.melodyNumber][i])
             setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.timeBetweenNotes * i);
         }
-        this.listen();
+        this.listen();   
     },
 
     listen: function() {
@@ -82,7 +90,11 @@ var Game = new Class({
                         var indexOfNoteToBePlayed = NOTES.indexOf(MELODIES[this.melodyNumber][this.currentAdvance])
                         if (this.squares[i] === this.squares[indexOfNoteToBePlayed]) {
                             this.currentAdvance += 1;
-                            if (this.currentAdvance === this.progression) {
+                            // Then the user has won
+                            if (this.currentAdvance === this.progression && this.progression == MELODIES[this.melodyNumber].length) {
+                                setTimeout(this.showNotice.pass('Vous avez gagnez !'), 500);
+                                setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 1000);
+                            } else if (this.currentAdvance === this.progression) {
                                 this.progression += 1;
                                 setTimeout(this.play.bind(this), 1000);
                                 this.currentAdvance = 0;

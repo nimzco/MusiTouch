@@ -11,7 +11,7 @@ var Menu = new Class({
         menuColor     : '#AAE',
         menuHoverColor: '#A00',
         // Time
-        menuIntervalTime: 1500 // ms
+        menuIntervalTime: 1300 // ms
     },
     /*
      * menuNames: ["Menu 1", "Menu 2", "Option", ...]
@@ -24,7 +24,7 @@ var Menu = new Class({
         this.nbMenu    = menuNames.length;
         this.paper     = paper; 
         this.draw();
-
+        this.currentSelectedMenu = 0;
         window.onresize = this.draw.bind(this);
 
         this.handleMouseOver();
@@ -123,34 +123,53 @@ var Menu = new Class({
             this.clearMenuColor();
             this.menuRects[currentMenuSelection].attr('fill', this.options.menuHoverColor);
             currentMenuSelection = (currentMenuSelection == this.nbMenu - 1 ? 0 : currentMenuSelection + 1);
+            this.currentSelectedMenu = (currentMenuSelection === 0 ? 4 : currentMenuSelection - 1); // Some problems due to the setInterval
         }.bind(this);
         this.changeMenuTimeoutID = setInterval(changeMenuSelection, this.options.menuIntervalTime);
     },
     
     musiTouchClickHandler: function() {
         var paper = this.paper;
-        // this.menuRects[0].click(function() { var game = new Game(6, paper); });
-        // this.menuTexts[0].click(function() { var game = new Game(6, paper); });
-        // 
-        $(this.menuRects[0][0]).addEvent('click', function() { window.game = new Game(12, paper, {freegame: true}); });
-        $(this.menuTexts[0][0]).addEvent('click', function() { var game = new Game(12, paper, {freegame: true}); });
-        $(this.menuRects[0][0]).addEvent('touchstart', function() { var game = new Game(12, paper, {freegame: true});});
-        $(this.menuTexts[0][0]).addEvent('touchstart', function() { var game = new Game(12, paper, {freegame: true}); });
         
-        this.menuRects[1].click(function() { var game = new Game(4, paper); });
-        this.menuTexts[1].click(function() { var game = new Game(4, paper); });
-        $(this.menuRects[1][0]).onGesture('tap', function() { var game = new Game(4, paper); });
-        $(this.menuTexts[1][0]).onGesture('tap', function() { var game = new Game(4, paper); });
+        $(this.menuRects[0][0]).addEvent('click',      function() { new Game(12, paper, {freegame: true}); });
+        $(this.menuTexts[0][0]).addEvent('click',      function() { new Game(12, paper, {freegame: true}); });
+        $(this.menuRects[0][0]).addEvent('touchstart', function() { new Game(12, paper, {freegame: true});});
+        $(this.menuTexts[0][0]).addEvent('touchstart', function() { new Game(12, paper, {freegame: true}); });
 
-        this.menuRects[2].click(function() { var game = new Game(6, paper); });
-        this.menuTexts[2].click(function() { var game = new Game(6, paper); });
-        $(this.menuRects[2][0]).onGesture('tap', function() { var game = new Game(6, paper); });
-        $(this.menuTexts[2][0]).onGesture('tap', function() { var game = new Game(6, paper); });
+        $(this.menuRects[1][0]).addEvent('click',      function() { new Game(4, paper); });
+        $(this.menuTexts[1][0]).addEvent('click',      function() { new Game(4, paper); });
+        $(this.menuRects[1][0]).addEvent('touchstart', function() { new Game(4, paper);});
+        $(this.menuTexts[1][0]).addEvent('touchstart', function() { new Game(4, paper); });
+        
+        $(this.menuRects[2][0]).addEvent('click',      function() { new Game(6, paper); });
+        $(this.menuTexts[2][0]).addEvent('click',      function() { new Game(6, paper); });
+        $(this.menuRects[2][0]).addEvent('touchstart', function() { new Game(6, paper);});
+        $(this.menuTexts[2][0]).addEvent('touchstart', function() { new Game(6, paper); });
 
-        this.menuRects[3].click(function() { var game = new Game(12, paper); });
-        this.menuTexts[3].click(function() { var game = new Game(12, paper); });
-        $(this.menuRects[3][0]).onGesture('tap', function() { var game = new Game(12, paper); });
-        $(this.menuTexts[3][0]).onGesture('tap', function() { var game = new Game(12, paper); });
+        $(this.menuRects[3][0]).addEvent('click',      function() { new Game(12, paper); });
+        $(this.menuTexts[3][0]).addEvent('click',      function() { new Game(12, paper); });
+        $(this.menuRects[3][0]).addEvent('touchstart', function() { new Game(12, paper);});
+        $(this.menuTexts[3][0]).addEvent('touchstart', function() { new Game(12, paper); });
+
+        $(document.body).addEvent('keydown', function(event) {
+            if (event.key == 'space') {
+                switch(this.currentSelectedMenu) {
+                    case 0: 
+                        new Game(12, paper, {freegame: true});
+                        break;
+                    case 1: 
+                        new Game(4, paper);
+                        break;
+                    case 2: 
+                        new Game(6, paper);
+                        break;
+                    case 3: 
+                        new Game(12, paper);
+                        break;
+                }
+            }
+        }.bind(this));
+
 
     }
 
