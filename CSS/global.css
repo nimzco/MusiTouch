@@ -1,6 +1,9 @@
 body {
-  background-color: grey;
-  margin: 0; }
+  background-color   : grey;
+  margin             : 0;
+  -webkit-user-select: none;
+  cursor             : pointer;
+}
 
 #canvas {
   background-color: white; }

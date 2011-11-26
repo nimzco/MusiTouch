@@ -132,10 +132,10 @@ var Menu = new Class({
         // this.menuRects[0].click(function() { var game = new Game(6, paper); });
         // this.menuTexts[0].click(function() { var game = new Game(6, paper); });
         // 
-        $(this.menuRects[0][0]).addEvent('click', function() { window.game = new Game(6, paper); });
-        $(this.menuTexts[0][0]).addEvent('click', function() { var game = new Game(6, paper); });
-        $(this.menuRects[0][0]).addEvent('touchstart', function() { var game = new Game(6, paper);});
-        $(this.menuTexts[0][0]).addEvent('touchstart', function() { var game = new Game(6, paper); });
+        $(this.menuRects[0][0]).addEvent('click', function() { window.game = new Game(12, paper, {freegame: true}); });
+        $(this.menuTexts[0][0]).addEvent('click', function() { var game = new Game(12, paper, {freegame: true}); });
+        $(this.menuRects[0][0]).addEvent('touchstart', function() { var game = new Game(12, paper, {freegame: true});});
+        $(this.menuTexts[0][0]).addEvent('touchstart', function() { var game = new Game(12, paper, {freegame: true}); });
         
         this.menuRects[1].click(function() { var game = new Game(4, paper); });
         this.menuTexts[1].click(function() { var game = new Game(4, paper); });
@@ -147,10 +147,10 @@ var Menu = new Class({
         $(this.menuRects[2][0]).onGesture('tap', function() { var game = new Game(6, paper); });
         $(this.menuTexts[2][0]).onGesture('tap', function() { var game = new Game(6, paper); });
 
-        this.menuRects[3].click(function() { var game = new Game(12, paper, {freegame: true}); });
-        this.menuTexts[3].click(function() { var game = new Game(12, paper, {freegame: true}); });
-        $(this.menuRects[3][0]).onGesture('tap', function() { var game = new Game(12, paper, {freegame: true}); });
-        $(this.menuTexts[3][0]).onGesture('tap', function() { var game = new Game(12, paper, {freegame: true}); });
+        this.menuRects[3].click(function() { var game = new Game(12, paper); });
+        this.menuTexts[3].click(function() { var game = new Game(12, paper); });
+        $(this.menuRects[3][0]).onGesture('tap', function() { var game = new Game(12, paper); });
+        $(this.menuTexts[3][0]).onGesture('tap', function() { var game = new Game(12, paper); });
 
     }
 

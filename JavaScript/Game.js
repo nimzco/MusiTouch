@@ -6,7 +6,7 @@ var Game = new Class({
         squareMargin    : 0.02, // Distance between squares in %
         squareColor     : '#AAE',
         timeBetweenNotes: 500, // in ms
-        freegame        : false
+        freegame        : false,
     }, 
     initialize: function(nbSquare, paper, options){
 
@@ -15,10 +15,10 @@ var Game = new Class({
         // Refers to a table
         this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
         // Refers where it has stopped in the melody
-        this.progression = 1;
+        this.progression = 10;
         this.first = true;
 
-        window.NOTES = ["Do", "Do_d", "Re","Re_d", "Mi", "Fa", "Fa_d","Sol", "Sol_d", "La","La_d", "Si"];
+        window.NOTES = ["Do", "Do#", "Re","Re#", "Mi", "Fa", "Fa#","Sol", "Sol#", "La","La#", "Si"];
         window.EPPIC = new buzz.sound( "sounds/NOTESA", {
           formats: [ "mp3" ],
           preload: true
@@ -42,21 +42,24 @@ var iTime = 0;
 */
         
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
-        window.COLORS.sort(Math.round(Math.random())-0.5);
+        window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
         this.nbSquare = nbSquare;
         this.paper    = paper;
         this.paper.clear();
         this.squares = []
         for (var i = 0; i < this.nbSquare; i += 1) {
-            var tmpCase = new Case(this.paper, NOTES[i], {color: COLORS[i]});
-            this.squares.push(tmpCase);
+            var tmpSquare = new Square(this.paper, NOTES[i], {color: COLORS[i]});
+            this.squares.push(tmpSquare);
         }
         this.draw();
         window.onresize = this.draw.bind(this);
         if (this.options.freegame) {
             for (var i = 0; i < this.squares.length; i += 1) {
                 this.squares[i].el.addEvent('click', function(i) {
+                    this.squares[i].play();
+                }.bind(this,i));
+                this.squares[i].text.click(function(i) {
                     this.squares[i].play();
                 }.bind(this,i));
             }
@@ -144,6 +147,7 @@ var iTime = 0;
                this.squares[currentSquare].getRect().attr('y', y0);
                this.squares[currentSquare].getRect().attr('width', squareWidth);
                this.squares[currentSquare].getRect().attr('height', squareHeight);
+               this.squares[currentSquare].drawTextInsideRect();
            }
        }
     }
