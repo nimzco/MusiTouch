@@ -8,21 +8,16 @@ var Sound = new Class({
     
     initialize: function(note, options){
         this.setOptions(options);
-        /*
-this.sound = new buzz.sound( "sounds/" + note, {
-          formats: [ "mp3" ],
-          preload: true
-        });
-*/
         this.numNote = note;
-        
+        this.first   = true;
     },
     
     playSound: function() {
-      //console.log(this.numNote); 
-      //EPPIC.setPercent((this.numNote + 1));
-      EPPIC.play();
-      EPPIC.set("currentTime", this.numNote * 2);
+      if (!this.first) { 
+        EPPIC.set("currentTime", this.numNote * 2);
+      } else {
+        this.first = false
+      }
       EPPIC.play();
     }
 });
