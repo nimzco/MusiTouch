@@ -16,7 +16,7 @@ var Square = new Class({
         this.el = this.rect[0];
         this.rect.attr('fill', this.options.color);        
 
-        this.sound = new Sound(numNote);
+        this.sound = new Sound(NOTES[numNote]);
         // this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
         // this.rect[0].addEvent('touchstart', this.sound.playSound.bind(this.sound));
         this.rect.attr('fill', this.options.color);

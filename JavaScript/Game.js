@@ -16,13 +16,10 @@ var Game = new Class({
         this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
         // Refers where it has stopped in the melody
         this.progression = 3;
-        this.first = true;
 
         window.NOTES = ["Do", "Do#", "Re","Re#", "Mi", "Fa", "Fa#","Sol", "Sol#", "La","La#", "Si"];
-        window.EPPIC = new buzz.sound( "sounds/NOTES2", {
-          formats: [ "mp3" ],
-          preload: true
-        });
+
+
         /*
         var iTime = 0;
         window.EPPIC.bind("play", function(e) {
