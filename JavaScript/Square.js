@@ -7,16 +7,16 @@ var Square = new Class({
         fontSize      : .6,
         animationTime : 250
     }, 
-    initialize: function(paper, numNote, options) {
+    initialize: function(paper, numNote, nbNote, options) {
         this.setOptions(options);
         var audioWrapper = document.getElementById('audio_wrapper');
-        this.note = NOTES[numNote];
+        this.note = NOTES[nbNote][numNote];
         this.paper = paper;
         this.rect = this.paper.rect(0,0,0,0,3);
         this.el = this.rect[0];
         this.rect.attr('fill', this.options.color);        
 
-        this.sound = new Sound(NOTES[numNote]);
+        this.sound = new Sound(NOTES[nbNote][numNote]);
         // this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
         // this.rect[0].addEvent('touchstart', this.sound.playSound.bind(this.sound));
         this.rect.attr('fill', this.options.color);

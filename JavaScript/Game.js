@@ -10,23 +10,24 @@ var Game = new Class({
     }, 
     initialize: function(nbSquare, paper, options){
         
-        window.NOTES_4 = [];
-        window.NOTES_6 = [];
-        window.NOTES_12 = [];
-        
-
-
-
-
-
-        window.MELODIES = [['Do', 'Re'],
-                           ['Do', 'Re']];
+        window.NOTES = {
+            4 : ['Do', 'Re', 'Mi', 'Fa'],
+            6 : ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La'],
+            12: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#','Sol', 'Sol#', 'La', 'La#', 'Si']
+        };
+        window.MELODIES = {
+            4 : [['Do', 'Re'],
+                 ['Do', 'Re']],
+            6 : [['Do', 'Re'], 
+                 ['Do', 'Re']],
+            12: [['Do', 'Re'], 
+                 ['Do', 'Re']]
+        };
         // Refers to a table
-        this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
+        this.melodyNumber = Math.floor(Math.random() * MELODIES[nbSquare].length);
         // Refers where it has stopped in the melody
         this.first = true;
         this.progression = 1;
-        window.NOTES = ["Do", "Do#", "Re","Re#", "Mi", "Fa", "Fa#","Sol", "Sol#", "La","La#", "Si"];        
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
@@ -35,7 +36,7 @@ var Game = new Class({
         this.paper.clear();
         this.squares = []
         for (var i = 0; i < this.nbSquare; i += 1) {
-            var tmpSquare = new Square(this.paper, i, {color: COLORS[i]});
+            var tmpSquare = new Square(this.paper, i, this.nbSquare, {color: COLORS[i]});
             this.squares.push(tmpSquare);
         }
         this.draw();
@@ -67,7 +68,7 @@ var Game = new Class({
         this.isPlaying = true;
         setTimeout(function() { this.isPlaying = false; }.bind(this), this.progression * this.options.timeBetweenNotes);
         for (var i = 0; i < this.progression; i += 1) {
-            var noteToPlay = NOTES.indexOf(MELODIES[this.melodyNumber][i])
+            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i])
             setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.timeBetweenNotes * i);
         }
         this.listen();   
@@ -87,13 +88,13 @@ var Game = new Class({
                         this.squares[i].play();
                         // Check if the player has touched the right square
                         // Note that has to be played
-                        var indexOfNoteToBePlayed = NOTES.indexOf(MELODIES[this.melodyNumber][this.currentAdvance])
+                        var indexOfNoteToBePlayed = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][this.currentAdvance])
                         if (this.squares[i] === this.squares[indexOfNoteToBePlayed]) {
                             this.currentAdvance += 1;
                             // Then the user has won
-                            if (this.currentAdvance === this.progression && this.progression == MELODIES[this.melodyNumber].length) {
+                            if (this.currentAdvance === this.progression && this.progression == MELODIES[this.nbSquare][this.melodyNumber].length) {
                                 setTimeout(this.showNotice.pass('Vous avez gagnez !'), 500);
-                                setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 1000);
+                                setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 1200);
                             } else if (this.currentAdvance === this.progression) {
                                 this.progression += 1;
                                 setTimeout(this.play.bind(this), 1000);
@@ -118,12 +119,12 @@ var Game = new Class({
     },
     
     showNotice: function (text) {
-        var screen = paper.rect(0,0,window.innerWidth, window.innerHeight);
-        screen.attr('fill', '#ddd');
+        var noticeScreen = paper.rect(0,0,window.innerWidth, window.innerHeight);
+        noticeScreen.attr('fill', '#ddd');
         var notice = paper.text(window.innerWidth / 2, window.innerHeight / 2, text);
         notice.attr('font-size', 100);
         setTimeout(function() {
-            screen.remove();
+            noticeScreen.remove();
             notice.remove();
         }, 500);
     },
