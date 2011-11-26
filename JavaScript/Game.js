@@ -3,7 +3,7 @@ var Game = new Class({
     Implements: [Options, Events],
 
     options: {
-        squareMargin    : 0.01, // Distance between squares in %
+        squareMargin    : 0.04, // Distance between squares in %
         squareColor     : '#AAE',
         timeBetweenNotes: 500, // in ms
         freegame        : false,
@@ -20,9 +20,16 @@ var Game = new Class({
                  ['Do', 'Re']],
             6 : [['Do', 'Re'], 
                  ['Do', 'Re']],
-            12: [['Do', 'Re'], 
-                 ['Do', 'Re']]
+            12: [['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
+                 ['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si']]
         };
+
+
+/*
+        window.MELODIES = [['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
+                           ['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si']];
+*/
+
         // Refers to a table
         this.melodyNumber = Math.floor(Math.random() * MELODIES[nbSquare].length);
         // Refers where it has stopped in the melody

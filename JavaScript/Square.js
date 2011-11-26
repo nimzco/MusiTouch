@@ -5,7 +5,7 @@ var Square = new Class({
     options: {
         color         : '#ce168e',
         fontSize      : .6,
-        animationTime : 250
+        animationTime : 500
     }, 
     initialize: function(paper, numNote, nbNote, options) {
         this.setOptions(options);
@@ -14,7 +14,8 @@ var Square = new Class({
         this.paper = paper;
         this.rect = this.paper.rect(0,0,0,0,3);
         this.el = this.rect[0];
-        this.rect.attr('fill', this.options.color);        
+        this.rect.attr('fill', 'url(patterns/pat' + (numNote + 1) + '.png)');        
+
 
         this.sound = new Sound(NOTES[nbNote][numNote]);
         // this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
@@ -30,6 +31,9 @@ var Square = new Class({
         this.text = this.paper.text(x + width / 2, y + height / 2, this.note);
         this.text.attr('font-size', height * this.options.fontSize);
         this.text.attr('opacity', 0);
+        this.text.attr('fill', "#FFF");
+        this.text.attr('stroke', "#000");
+        this.text.attr('stroke-width', "3");
     },
     
     getRect: function() {
@@ -37,12 +41,12 @@ var Square = new Class({
     },
 
     play: function() {
-        this.text.animate({opacity: 1}, this.options.animationTime)        
-        this.rect.animate({fill: '#fff'}, this.options.animationTime);
-
+        this.text.attr('opacity', "1");
+        //this.text.animate({opacity: 1}, this.options.animationTime)        
+        this.rect.animate({fill: "#FFF"}, this.options.animationTime);
         setTimeout(function() {
             this.rect.animate({fill: this.options.color}, this.options.animationTime);
-            this.text.animate({opacity: 0}, this.options.animationTime)
+            this.text.animate({opacity: 0}, this.options.animationTime - 150)
 
             }.bind(this), this.options.animationTime);
 
