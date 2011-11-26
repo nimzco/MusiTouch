@@ -3,7 +3,7 @@ var Game = new Class({
     Implements: [Options, Events],
 
     options: {
-        squareMargin    : 0.02, // Distance between squares in %
+        squareMargin    : 0.01, // Distance between squares in %
         squareColor     : '#AAE',
         timeBetweenNotes: 500, // in ms
         freegame        : false,
@@ -15,29 +15,9 @@ var Game = new Class({
         // Refers to a table
         this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
         // Refers where it has stopped in the melody
-        this.progression = 3;
-
-        window.NOTES = ["Do", "Do#", "Re","Re#", "Mi", "Fa", "Fa#","Sol", "Sol#", "La","La#", "Si"];
-
-
-        /*
-        var iTime = 0;
-        window.EPPIC.bind("play", function(e) {
-          iTime = new Date().getTime();
-          window.first = false;  
-        });
-        
-        window.EPPIC.bind("timeupdate", function(e) {
-            //var timer = buzz.toTimer(this.getTime());
-            var time = new Date().getTime();
-            //console.log(time - iTime); 
-            //console.log(time - iTime >= 1500);
-            if (time - iTime >= 1500) {
-                window.EPPIC.pause();
-            }
-        });
-        */
-        
+        this.first = true;
+        this.progression = 1;
+        window.NOTES = ["Do", "Do#", "Re","Re#", "Mi", "Fa", "Fa#","Sol", "Sol#", "La","La#", "Si"];        
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
@@ -92,7 +72,7 @@ var Game = new Class({
             for (var i = 0; i < this.squares.length; i += 1) {
                 // Add an event to listen the click
                 // The 'this' reference has been passed as the 'Game'
-                this.squares[i].el.addEvent('click', function(i) {
+                var onClickFunction = function(i) {
                     // Only if the game is not playing sounds
                     if (!this.isPlaying) {
                         // Play the sound when clicked
@@ -106,6 +86,7 @@ var Game = new Class({
                                 this.progression += 1;
                                 setTimeout(this.play.bind(this), 1000);
                                 this.currentAdvance = 0;
+                                this.showNotice("Bien joué !");
                                 // TODO Show "Well done"
                             }
                         } else {
@@ -113,12 +94,19 @@ var Game = new Class({
                             this.isPlaying = true;
                             setTimeout(this.play.bind(this), 1000);
                             // TODO Show "Try Again"
-                        }   
-                    }                
-                }.bind(this, i));
+                        }
+                    }
+                }.bind(this, i);
+                this.squares[i].el.addEvent('click', onClickFunction);
+                this.squares[i].text[0].addEvent('click', onClickFunction);
             }
         }
         this.first = false;
+    },
+    
+    showNotice: function (text) {
+        var screen = paper.rect(0,0,window.innerWidth, window.innerHeight);
+        screen.attr('fill', 'grey')
     },
     
     /*

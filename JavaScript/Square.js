@@ -4,7 +4,7 @@ var Square = new Class({
 
     options: {
         color         : '#ce168e',
-        fontSize      : .8,
+        fontSize      : .6,
         animationTime : 250
     }, 
     initialize: function(paper, numNote, options) {
