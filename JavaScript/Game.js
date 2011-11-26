@@ -15,31 +15,31 @@ var Game = new Class({
         // Refers to a table
         this.melodyNumber = Math.floor(Math.random() * MELODIES.length);
         // Refers where it has stopped in the melody
-        this.progression = MELODIES[0].length;
+        this.progression = 3;
         this.first = true;
 
         window.NOTES = ["Do", "Do#", "Re","Re#", "Mi", "Fa", "Fa#","Sol", "Sol#", "La","La#", "Si"];
-        window.EPPIC = new buzz.sound( "sounds/NOTESA", {
+        window.EPPIC = new buzz.sound( "sounds/NOTES2", {
           formats: [ "mp3" ],
           preload: true
         });
         /*
-var iTime = 0;
+        var iTime = 0;
         window.EPPIC.bind("play", function(e) {
           iTime = new Date().getTime();
           window.first = false;  
         });
         
         window.EPPIC.bind("timeupdate", function(e) {
-          //var timer = buzz.toTimer(this.getTime());
-          var time = new Date().getTime();
-          console.log(time - iTime); 
-          //console.log(time - iTime >= 1500);
-          if (time - iTime >= 1500) {
-            window.EPPIC.pause();
-          }
+            //var timer = buzz.toTimer(this.getTime());
+            var time = new Date().getTime();
+            //console.log(time - iTime); 
+            //console.log(time - iTime >= 1500);
+            if (time - iTime >= 1500) {
+                window.EPPIC.pause();
+            }
         });
-*/
+        */
         
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
@@ -49,7 +49,7 @@ var iTime = 0;
         this.paper.clear();
         this.squares = []
         for (var i = 0; i < this.nbSquare; i += 1) {
-            var tmpSquare = new Square(this.paper, NOTES[i], {color: COLORS[i]});
+            var tmpSquare = new Square(this.paper, i, {color: COLORS[i]});
             this.squares.push(tmpSquare);
         }
         this.draw();

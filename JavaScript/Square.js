@@ -7,23 +7,20 @@ var Square = new Class({
         fontSize      : .8,
         animationTime : 250
     }, 
-    initialize: function(paper, note, options) {
+    initialize: function(paper, numNote, options) {
         this.setOptions(options);
         var audioWrapper = document.getElementById('audio_wrapper');
-        var numNote = Math.round((Math.random()*9)+1);
-        this.note = (note ? note : NOTES[numNote]);
+        this.note = NOTES[numNote];
         this.paper = paper;
         this.rect = this.paper.rect(0,0,0,0,3);
         this.el = this.rect[0];
         this.rect.attr('fill', this.options.color);        
 
-        var sound = new Sound(numNote);
-        this.sound = sound;
-        this.rect[0].addEvent('click', sound.playSound.bind(sound));
-        this.rect[0].addEvent('touchstart', sound.playSound.bind(sound));
+        this.sound = new Sound(numNote);
+        this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
+        this.rect[0].addEvent('touchstart', this.sound.playSound.bind(this.sound));
         this.rect.attr('fill', this.options.color);
         
-        //this.drawTextInsideRect();
 
     },
     drawTextInsideRect: function() {
