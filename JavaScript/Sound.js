@@ -6,14 +6,23 @@ var Sound = new Class({
         instrument: 'piano'
     },
     
-    initialize: function(audio_id, options){
+    initialize: function(note, options){
         this.setOptions(options);
-        this.audio_id = audio_id;
+        /*
+this.sound = new buzz.sound( "sounds/" + note, {
+          formats: [ "mp3" ],
+          preload: true
+        });
+*/
+        this.numNote = note;
+        
     },
     
     playSound: function() {
-      var sound = document.getElementById(this.audio_id);
-      sound.currentTime = 0;
-      sound.play();
+      //console.log(this.numNote); 
+      //EPPIC.setPercent((this.numNote + 1));
+      EPPIC.play();
+      EPPIC.set("currentTime", this.numNote * 2);
+      EPPIC.play();
     }
 });

@@ -8,14 +8,15 @@ var Case = new Class({
     initialize: function(paper, note, options) {
         this.setOptions(options);
         var audioWrapper = document.getElementById('audio_wrapper');
-        this.note = (note ? note : NOTES[Math.round((Math.random()*10)+1)]);
-        this.uuid = this.guidGenerator();
-        audioWrapper.innerHTML += "<audio id=" + this.uuid + " src=\"sounds/"+ this.note + ".mp3\" preload=\"auto\" autobuffer hidden=\"true\">";
+        var numNote = Math.round((Math.random()*9)+1);
+        this.note = (note ? note : NOTES[numNote]);
         this.paper = paper;
         this.rect = this.paper.rect(0,0,0,0,3);
         this.rect.attr('fill', this.options.color);        
-        var sound = new Sound(this.uuid);
+/*         var sound = new Sound(this.note); */
+        var sound = new Sound(numNote);
         this.rect[0].addEvent('click', sound.playSound.bind(sound));
+        this.rect[0].addEvent('touchstart', sound.playSound.bind(sound));
     },
     
     getRect: function() {

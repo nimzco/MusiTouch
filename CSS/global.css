@@ -4,3 +4,14 @@ body {
 
 #canvas {
   background-color: white; }
+
+.table {
+  display: table;
+}
+
+#table div {
+  display: table-cell;
+  background-color: blue;
+  width: 10em;
+  height: 10em;
+}
