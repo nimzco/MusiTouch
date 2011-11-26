@@ -86,13 +86,14 @@ var Game = new Class({
                                 this.progression += 1;
                                 setTimeout(this.play.bind(this), 1000);
                                 this.currentAdvance = 0;
-                                this.showNotice("Bien joué !");
+                                setTimeout(this.showNotice.pass("Bien joué !"), 400);
                                 // TODO Show "Well done"
                             }
                         } else {
                             this.currentAdvance = 0;
                             this.isPlaying = true;
                             setTimeout(this.play.bind(this), 1000);
+                            setTimeout(this.showNotice.pass("Recommence"), 400);
                             // TODO Show "Try Again"
                         }
                     }
@@ -106,7 +107,13 @@ var Game = new Class({
     
     showNotice: function (text) {
         var screen = paper.rect(0,0,window.innerWidth, window.innerHeight);
-        screen.attr('fill', 'grey')
+        screen.attr('fill', '#ddd');
+        var notice = paper.text(window.innerWidth / 2, window.innerHeight / 2, text);
+        notice.attr('font-size', 100);
+        setTimeout(function() {
+            screen.remove();
+            notice.remove();
+        }, 500);
     },
     
     /*

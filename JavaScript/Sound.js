@@ -13,11 +13,12 @@ var Sound = new Class({
           formats: [ "mp3" ],
           preload: true
         });
+        this.first = true;
     },
     
     playSound: function() {
       //buzz.all().pause();
-      this.sound.set('currentTime', 0);
+      if(!this.first) {this.sound.set('currentTime', 0);} else {this.first = false;}
       this.sound.play();
     }
 });
