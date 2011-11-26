@@ -62,10 +62,10 @@ var Game = new Class({
                 this.squares[i].el.addEvent('touchstart', function(i) {
                     this.squares[i].play();
                 }.bind(this,i));
-                this.squares[i][0].addEvent('click', function(i) {
+                this.squares[i].text[0].addEvent('click', function(i) {
                     this.squares[i].play();
                 }.bind(this,i));
-                this.squares[i][0].addEvent('touchstart', function(i) {
+                this.squares[i].text[0].addEvent('touchstart', function(i) {
                     this.squares[i].play();
                 }.bind(this,i));
             }
