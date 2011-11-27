@@ -36,11 +36,7 @@ var Menu = new Class({
     },
     
     reinitialize: function() {
-        clearInterval(this.changeMenuTimeoutID);
-        this.draw();  
-        this.handleMouseOver();
-        this.launchChangeMenuSelection();
-        this.musiTouchClickHandler();
+        window.location.reload();
     },
     
     /*
@@ -78,6 +74,7 @@ var Menu = new Class({
             this.menuTexts[i].attr('x', canvasWidth / 2);
             this.menuTexts[i].attr('y', menuSpacing + (menuHeight / 2) + i * (menuHeight + menuSpacing));
             this.menuTexts[i].attr('font-size', this.fontSize);
+            this.menuTexts[i].attr('fill', '#000');
         }
     },
 
@@ -89,20 +86,21 @@ var Menu = new Class({
         // The two following functions take 'Menu' as parameter.
         // It refers to the current Menu Object.
         // Hereafter, 'this' refers to the menu rectangle itselfs (Raphael's element)
-        var hoverIn = function(Menu) {
-            Menu.clearMenuColor();
-            this.attr('fill', Menu.options.menuHoverColor);
-            clearInterval(Menu.changeMenuTimeoutID)
+        var hoverIn = function(menuIndex) {
+            this.clearMenuColor();
+            this.menuRects[menuIndex].attr('fill', this.options.menuHoverColor);
+            this.menuTexts[menuIndex].attr('fill', '#fff');
+            clearInterval(this.changeMenuTimeoutID)
         };
-        var hoverOut = function(Menu) {
-            this.attr('fill', Menu.options.menuColor);
-            Menu.launchChangeMenuSelection();
+        var hoverOut = function(menuIndex) {
+            this.clearMenuColor();
+            this.launchChangeMenuSelection();
         };
         // Mouse hover handler
         for (var i = 0; i < this.nbMenu; i += 1) {
-            this.menuRects[i].hover(hoverIn.bind(this.menuRects[i], this), hoverOut.bind(this.menuRects[i], this));
+            this.menuRects[i].hover(hoverIn.bind(this, i), hoverOut.bind(this, i));
             // In order that the menu keep the right color when the mouse is over the text
-            this.menuTexts[i].hover(hoverIn.bind(this.menuRects[i], this), hoverOut.bind(this.menuRects[i], this)); // Passing menuRects as context in order as THEY change color
+            this.menuTexts[i].hover(hoverIn.bind(this, i), hoverOut.bind(this, i));
         }
     },
 
@@ -112,6 +110,7 @@ var Menu = new Class({
     clearMenuColor: function () {
         for (var i = 0; i < this.nbMenu; i += 1) { 
             this.menuRects[i].attr('fill', this.options.menuColor);
+            this.menuTexts[i].attr('fill', '#000');
         }
     },
     /*
@@ -122,6 +121,7 @@ var Menu = new Class({
         var changeMenuSelection = function () {
             this.clearMenuColor();
             this.menuRects[currentMenuSelection].attr('fill', this.options.menuHoverColor);
+            this.menuTexts[currentMenuSelection].attr('fill', '#fff');
             currentMenuSelection = (currentMenuSelection == this.nbMenu - 1 ? 0 : currentMenuSelection + 1);
             this.currentSelectedMenu = (currentMenuSelection === 0 ? 4 : currentMenuSelection - 1); // Some problems due to the setInterval
         }.bind(this);
