@@ -114,7 +114,7 @@ var Game = new Class({
                             // Then the user has won
                             if (this.currentAdvance === this.progression && this.progression == MELODIES[this.nbSquare][this.melodyNumber].length) {
                                 setTimeout(this.showNotice.pass('Vous avez gagnez !'), 500);
-                                var sound = new buzz.sound( "sounds/mission", {
+                                var sound = new buzz.sound( "sounds/mission2", {
                                   formats: [ "mp3" ],
                                   preload: true
                                 });
