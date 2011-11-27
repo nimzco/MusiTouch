@@ -14,15 +14,15 @@ var Game = new Class({
         
         window.NOTES = {
             4 : ['Sol', 'La', 'Si', 'Fa'],
-            6 : ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La'],
-            12: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#','Sol', 'Sol#', 'La', 'La#', 'Si']
+            6 : ['Sol_g', 'Si_g', 'Do', 'Fa_g', 'Fa_g#', 'La'],
+            12: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa_g', 'Fa_g#','Sol_g', 'Sol', 'La', 'La#', 'Si_g']
         };
         window.MELODIES = {
-            4 : [['Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol+', 'Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol+'], /* AU clair de la lune*/
+            4 : [['Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*', 'Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*' ] , /* AU clair de la lune*/
                  ],
-            6 : [['Do', 'Re'], 
+            6 : [['Sol_g', 'Sol_g', 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g', 'Sol_g', 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g'], /* Mission impossible */ 
                  ['Do', 'Re']],
-            12: [['Sol', 'Sol', 'Si', 'Do', 'Sol', 'Sol', 'Fa', 'Fa#', 'Sol'], /* Mission impossible */
+            12: [
                  ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
                  ['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si']]
         };
@@ -37,7 +37,7 @@ var Game = new Class({
         this.melodyNumber = 0 /* Math.floor(Math.random() * MELODIES[nbSquare].length); */
         // Refers where it has stopped in the melody
         this.first = true;
-        this.progression =22;
+        this.progression = 20;
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
@@ -78,11 +78,17 @@ var Game = new Class({
         this.isPlaying = true;
         setTimeout(function() { this.isPlaying = false; }.bind(this), this.progression * this.options.timeBetweenNotes);
         for (var i = 0; i < this.progression; i += 1) {
-            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i].contains('+') ? MELODIES[this.nbSquare][this.melodyNumber][i].substr(0, MELODIES[this.nbSquare][this.melodyNumber][i].length - 1) : MELODIES[this.nbSquare][this.melodyNumber][i]);
+            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i].contains('+') || MELODIES[this.nbSquare][this.melodyNumber][i].contains('*') || MELODIES[this.nbSquare][this.melodyNumber][i].contains('-') ? MELODIES[this.nbSquare][this.melodyNumber][i].substr(0, MELODIES[this.nbSquare][this.melodyNumber][i].length - 1) : MELODIES[this.nbSquare][this.melodyNumber][i]);
             this.options.totalTime += this.options.timeBetweenNotes;
             setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.totalTime);
             if (MELODIES[this.nbSquare][this.melodyNumber][i].contains('+')) {
-              this.options.totalTime += 350;
+              this.options.totalTime += 250;
+            }
+            if (MELODIES[this.nbSquare][this.melodyNumber][i].contains('*')) {
+              this.options.totalTime += 500;
+            }
+            if (MELODIES[this.nbSquare][this.melodyNumber][i].contains('-')) {
+              this.options.totalTime -= 100;
             }
         }
         this.listen();   
@@ -110,7 +116,7 @@ var Game = new Class({
                                 setTimeout(this.showNotice.pass('Vous avez gagnez !'), 500);
                                 setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 1200);
                             } else if (this.currentAdvance === this.progression) {
-                                this.progression += 1;
+                                this.progression += 2;
                                 setTimeout(this.play.bind(this), 1000);
                                 this.currentAdvance = 0;
                                 setTimeout(this.showNotice.pass("Bien joué !"), 400);

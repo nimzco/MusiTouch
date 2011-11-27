@@ -5,7 +5,7 @@ var Square = new Class({
     options: {
         color         : '#ce168e',
         fontSize      : .6,
-        animationTime : 500
+        animationTime : 200
     }, 
     initialize: function(paper, numNote, nbNote, options) {
         this.setOptions(options);
@@ -33,7 +33,7 @@ var Square = new Class({
         var width  = this.el.width.baseVal.value;
         var height = this.el.height.baseVal.value;
         
-        this.text = this.paper.text(x + width / 2, y + height / 2, this.note);
+        this.text = this.paper.text(x + width / 2, y + height / 2, this.note.contains('_g') ? this.note.contains('_g#') ? this.note.substr(0,this.note.length - 3) + '#' : this.note.substr(0,this.note.length - 2) : this.note );
         this.text.attr('font-size', height * this.options.fontSize);
         this.text.attr('opacity', 0);
         this.text.attr('fill', "#00F");
