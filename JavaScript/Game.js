@@ -11,17 +11,17 @@ var Game = new Class({
     initialize: function(nbSquare, paper, options){
         
         window.NOTES = {
-            4 : ['Do', 'Re', 'Mi', 'Fa'],
+            4 : ['Sol', 'La', 'Si', 'Fa'],
             6 : ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La'],
             12: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#','Sol', 'Sol#', 'La', 'La#', 'Si']
         };
         window.MELODIES = {
-            4 : [['Do', 'Re'],
-                 ['Do', 'Re']],
+            4 : [['Sol', 'Sol', 'Sol', 'La', 'Si', 'La', 'Sol', 'Si', 'La', 'La', 'Sol', 'Sol', 'Sol', 'Sol', 'La', 'Si', 'La', 'Sol', 'Si', 'La', 'La', 'Sol'], /* AU clair de la lune*/
+                 ],
             6 : [['Do', 'Re'], 
                  ['Do', 'Re']],
-            12: [['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si'],
-                ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
+            12: [['Sol', 'Sol', 'Si', 'Do', 'Sol', 'Sol', 'Fa', 'Fa#', 'Sol'], /* Mission impossible */
+                 ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
                  ['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si']]
         };
 
@@ -32,10 +32,10 @@ var Game = new Class({
 */
 
         // Refers to a table
-        this.melodyNumber = Math.floor(Math.random() * MELODIES[nbSquare].length);
+        this.melodyNumber = 0 /* Math.floor(Math.random() * MELODIES[nbSquare].length); */
         // Refers where it has stopped in the melody
         this.first = true;
-        this.progression = 1;
+        this.progression =23;
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
@@ -76,7 +76,13 @@ var Game = new Class({
         this.isPlaying = true;
         setTimeout(function() { this.isPlaying = false; }.bind(this), this.progression * this.options.timeBetweenNotes);
         for (var i = 0; i < this.progression; i += 1) {
-            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i])
+            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i]);
+            if (MELODIES[this.nbSquare][this.melodyNumber][i].contains('+')) {
+              this.options.timeBetweenNotes = 750;
+            }
+            else {
+              this.options.timeBetweenNotes = 500;
+            }
             setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.timeBetweenNotes * i);
         }
         this.listen();   
