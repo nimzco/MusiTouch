@@ -18,10 +18,10 @@ var Game = new Class({
             12: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa_g', 'Fa_g#','Sol_g', 'Sol', 'La', 'La#', 'Si_g']
         };
         window.MELODIES = {
-            4 : [['Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*', 'Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*' ] , /* AU clair de la lune*/
+            4 : [['Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*', 'Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*' ] /* AU clair de la lune*/
                  ],
-            6 : [['Sol_g', 'Sol_g', 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g', 'Sol_g', 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g'], /* Mission impossible */ 
-                 ['Do', 'Re']],
+            6 : [['Sol_g', 'Sol_g']/* , 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g', 'Sol_g', 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g']  *//* Mission impossible */ 
+                ],
             12: [
                  ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
                  ['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si']]
@@ -37,7 +37,7 @@ var Game = new Class({
         this.melodyNumber = 0 /* Math.floor(Math.random() * MELODIES[nbSquare].length); */
         // Refers where it has stopped in the melody
         this.first = true;
-        this.progression = 20;
+        this.progression = 1;
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
@@ -114,9 +114,14 @@ var Game = new Class({
                             // Then the user has won
                             if (this.currentAdvance === this.progression && this.progression == MELODIES[this.nbSquare][this.melodyNumber].length) {
                                 setTimeout(this.showNotice.pass('Vous avez gagnez !'), 500);
-                                setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 1200);
+                                var sound = new buzz.sound( "sounds/mission", {
+                                  formats: [ "mp3" ],
+                                  preload: true
+                                });
+                                sound.play();
+                                setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 60000);
                             } else if (this.currentAdvance === this.progression) {
-                                this.progression += 2;
+                                this.progression += 1;
                                 setTimeout(this.play.bind(this), 1000);
                                 this.currentAdvance = 0;
                                 setTimeout(this.showNotice.pass("Bien joué !"), 400);
