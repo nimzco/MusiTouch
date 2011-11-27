@@ -7,6 +7,8 @@ var Game = new Class({
         squareColor     : '#AAE',
         timeBetweenNotes: 500, // in ms
         freegame        : false,
+        totalTime       : 0,
+        nextTime       : 0
     }, 
     initialize: function(nbSquare, paper, options){
         
@@ -16,7 +18,7 @@ var Game = new Class({
             12: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#','Sol', 'Sol#', 'La', 'La#', 'Si']
         };
         window.MELODIES = {
-            4 : [['Sol', 'Sol', 'Sol', 'La', 'Si', 'La', 'Sol', 'Si', 'La', 'La', 'Sol', 'Sol', 'Sol', 'Sol', 'La', 'Si', 'La', 'Sol', 'Si', 'La', 'La', 'Sol'], /* AU clair de la lune*/
+            4 : [['Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol+', 'Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol+'], /* AU clair de la lune*/
                  ],
             6 : [['Do', 'Re'], 
                  ['Do', 'Re']],
@@ -35,7 +37,7 @@ var Game = new Class({
         this.melodyNumber = 0 /* Math.floor(Math.random() * MELODIES[nbSquare].length); */
         // Refers where it has stopped in the melody
         this.first = true;
-        this.progression =23;
+        this.progression =22;
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
@@ -69,21 +71,19 @@ var Game = new Class({
             this.play();            
         }
     }, 
-
+    
     // Play the song that the gamer will have to reproduce
     play: function() {
         // This variable tells that the user cannnot click. He will be able to do so after the song has been played.
         this.isPlaying = true;
         setTimeout(function() { this.isPlaying = false; }.bind(this), this.progression * this.options.timeBetweenNotes);
         for (var i = 0; i < this.progression; i += 1) {
-            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i]);
+            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i].contains('+') ? MELODIES[this.nbSquare][this.melodyNumber][i].substr(0, MELODIES[this.nbSquare][this.melodyNumber][i].length - 1) : MELODIES[this.nbSquare][this.melodyNumber][i]);
+            this.options.totalTime += this.options.timeBetweenNotes;
+            setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.totalTime);
             if (MELODIES[this.nbSquare][this.melodyNumber][i].contains('+')) {
-              this.options.timeBetweenNotes = 750;
+              this.options.totalTime += 350;
             }
-            else {
-              this.options.timeBetweenNotes = 500;
-            }
-            setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.timeBetweenNotes * i);
         }
         this.listen();   
     },
