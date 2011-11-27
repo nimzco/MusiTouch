@@ -36,11 +36,7 @@ var Menu = new Class({
     },
     
     reinitialize: function() {
-        clearInterval(this.changeMenuTimeoutID);
-        this.draw();  
-        this.handleMouseOver();
-        this.launchChangeMenuSelection();
-        this.musiTouchClickHandler();
+        window.location.reload();
     },
     
     /*
