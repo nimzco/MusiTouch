@@ -15,16 +15,15 @@ var Game = new Class({
         window.NOTES = {
             4 : ['Sol', 'La', 'Si', 'Fa'],
             6 : ['Sol_g', 'Si_g', 'Do', 'Fa_g', 'Fa_g#', 'La'],
-            12: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa_g', 'Fa_g#','Sol_g', 'Sol', 'La', 'La#', 'Si_g']
+            12: ['Do', 'Re_g#', 'Mi_g', 'Re#', 'Mi', 'Fa_g', 'Fa_g#','Sol_g', 'Si_g', 'La', 'La_g#', 'Si_g']
         };
         window.MELODIES = {
             4 : [['Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*', 'Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*' ] /* AU clair de la lune*/
                  ],
-            6 : [['Sol_g', 'Sol_g']/* , 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g', 'Sol_g', 'Si_g-', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g-', 'Fa_g#-', 'Sol_g']  *//* Mission impossible */ 
+            6 : [['Sol_g', 'Sol_g' , 'Si_g', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g', 'Fa_g#-', 'Sol_g', 'Sol_g', 'Si_g', 'Do-', 'Sol_g', 'Sol_g', 'Fa_g', 'Fa_g#-', 'Sol_g']  /* Mission impossible */ 
                 ],
-            12: [
-                 ['Do', 'Re', 'Mi', 'Re', 'Mi', 'Fa', 'Do', 'Re', 'Mi'],
-                 ['Si', 'Sol', 'Mi', 'Sol', 'Si', 'Sol', 'Mi', 'Sol', 'Si']]
+            12: [['Re_g#-', 'Mi_g*', 'Fa_g#-', 'Sol_g*', 'Re_g#-', 'Mi_g', 'Fa_g#-', 'Sol_g', 'Do-', 'Si_g-', 'Mi_g-', 'Sol_g-', 'Si_g-', 'La_g#*'],
+                 ['Mi', 'Re#', 'Si_g', 'Re', 'Mi', 'Do', 'La_g', 'Do-', 'Si_g', 'Fa_g#']]
         };
 
 
@@ -37,7 +36,7 @@ var Game = new Class({
         this.melodyNumber = 0 /* Math.floor(Math.random() * MELODIES[nbSquare].length); */
         // Refers where it has stopped in the melody
         this.first = true;
-        this.progression = 1;
+        this.progression = 14;
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
         window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
@@ -97,7 +96,7 @@ var Game = new Class({
               this.options.totalTime += 500;
             }
             if (MELODIES[this.nbSquare][this.melodyNumber][i].contains('-')) {
-              this.options.totalTime -= 100;
+              this.options.totalTime -= 200;
             }
         }
         this.listen();   
