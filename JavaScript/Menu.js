@@ -152,7 +152,7 @@ var Menu = new Class({
         $(this.menuTexts[3][0]).addEvent('touchstart', function() { new Game(12, paper); });
 
         $(document.body).addEvent('keydown', function(event) {
-            if (event.key == 'space') {
+            if (event.key == 'space' || event.key == 'enter') {
                 switch(this.currentSelectedMenu) {
                     case 0: 
                         new Game(12, paper, {freegame: true});
