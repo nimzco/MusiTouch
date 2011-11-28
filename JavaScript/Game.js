@@ -72,13 +72,22 @@ var Game = new Class({
         }
     }, 
     
+    giveMeTheNote: function(note) {
+        if (note.contains('+') || note.contains('*') || note.contains('-')) {
+            return note.substr(0, note.length - 1);
+        } else {
+            return note;
+        }
+    },
+    
     // Play the song that the gamer will have to reproduce
     play: function() {
         // This variable tells that the user cannnot click. He will be able to do so after the song has been played.
         this.isPlaying = true;
         setTimeout(function() { this.isPlaying = false; }.bind(this), this.progression * this.options.timeBetweenNotes);
+        this.options.totalTime = 0;
         for (var i = 0; i < this.progression; i += 1) {
-            var noteToPlay = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][i].contains('+') || MELODIES[this.nbSquare][this.melodyNumber][i].contains('*') || MELODIES[this.nbSquare][this.melodyNumber][i].contains('-') ? MELODIES[this.nbSquare][this.melodyNumber][i].substr(0, MELODIES[this.nbSquare][this.melodyNumber][i].length - 1) : MELODIES[this.nbSquare][this.melodyNumber][i]);
+            var noteToPlay = NOTES[this.nbSquare].indexOf(this.giveMeTheNote(MELODIES[this.nbSquare][this.melodyNumber][i]));
             this.options.totalTime += this.options.timeBetweenNotes;
             setTimeout(this.squares[noteToPlay].play.bind(this.squares[noteToPlay]), this.options.totalTime);
             if (MELODIES[this.nbSquare][this.melodyNumber][i].contains('+')) {
@@ -108,10 +117,10 @@ var Game = new Class({
                         this.squares[i].play();
                         // Check if the player has touched the right square
                         // Note that has to be played
-                        var indexOfNoteToBePlayed = NOTES[this.nbSquare].indexOf(MELODIES[this.nbSquare][this.melodyNumber][this.currentAdvance])
+                        var indexOfNoteToBePlayed = NOTES[this.nbSquare].indexOf(this.giveMeTheNote(MELODIES[this.nbSquare][this.melodyNumber][this.currentAdvance]))
                         if (this.squares[i] === this.squares[indexOfNoteToBePlayed]) {
                             this.currentAdvance += 1;
-                            // Then the user has won
+                            // Then the user has finished the song.
                             if (this.currentAdvance === this.progression && this.progression == MELODIES[this.nbSquare][this.melodyNumber].length) {
                                 setTimeout(this.showNotice.pass('Vous avez gagnez !'), 500);
                                 var sound = new buzz.sound( "sounds/mission2", {
@@ -120,7 +129,8 @@ var Game = new Class({
                                 });
                                 sound.play();
                                 setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 60000);
-                            } else if (this.currentAdvance === this.progression) {
+                            } // Else, if he has just played correctly the notes
+                            else if (this.currentAdvance === this.progression) {
                                 this.progression += 1;
                                 setTimeout(this.play.bind(this), 1000);
                                 this.currentAdvance = 0;
