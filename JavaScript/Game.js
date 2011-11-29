@@ -37,9 +37,13 @@ var Game = new Class({
         this.melodyNumber = 0 /* Math.floor(Math.random() * MELODIES[nbSquare].length); */
         // Refers where it has stopped in the melody
         this.first = true;
-        this.progression = 19;
+        switch(nbSquare) {
+            case 4: this.progression = 1; break
+            case 6: this.progression = 2; break
+            case 12:this.progression = 3; break
+        }
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
-        window.COLORS.sort(Math.round(Math.random()) - 0.5);
+        //window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
         this.nbSquare = nbSquare;
         this.paper    = paper;
