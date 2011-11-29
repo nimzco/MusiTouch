@@ -2,7 +2,7 @@ body {
   background-color   : grey;
   margin             : 0;
   -webkit-user-select: none;
-  cursor: url('../patterns/pat8.png'), pointer;
+  cursor: url('../images/cursor.png'), pointer;
 }
 
 #canvas {
