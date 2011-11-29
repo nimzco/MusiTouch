@@ -131,7 +131,12 @@ var Game = new Class({
                                 setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 60000);
                             } // Else, if he has just played correctly the notes
                             else if (this.currentAdvance === this.progression) {
-                                this.progression += 1;
+                                switch(this.nbSquare) {
+                                    case 4: this.progression += 1; break
+                                    case 6: this.progression += 2; break
+                                    case 12:this.progression += 3; break
+                                }
+                                
                                 setTimeout(this.play.bind(this), 1000);
                                 this.currentAdvance = 0;
                                 setTimeout(this.showNotice.pass("Bien joué !"), 400);
