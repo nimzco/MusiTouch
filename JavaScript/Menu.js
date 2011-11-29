@@ -88,11 +88,13 @@ var Menu = new Class({
         // Hereafter, 'this' refers to the menu rectangle itselfs (Raphael's element)
         var hoverIn = function(menuIndex) {
             this.clearMenuColor();
+            this.menuRects[menuIndex].attr('stroke-width', "10");
             this.menuRects[menuIndex].attr('fill', this.options.menuHoverColor);
             this.menuTexts[menuIndex].attr('fill', '#fff');
             clearInterval(this.changeMenuTimeoutID)
         };
         var hoverOut = function(menuIndex) {
+            this.menuRects[menuIndex].attr('stroke-width', "1");
             this.clearMenuColor();
             this.launchChangeMenuSelection();
         };
@@ -109,6 +111,7 @@ var Menu = new Class({
      */
     clearMenuColor: function () {
         for (var i = 0; i < this.nbMenu; i += 1) { 
+	        this.menuRects[i].attr('stroke-width', "1");
             this.menuRects[i].attr('fill', this.options.menuColor);
             this.menuTexts[i].attr('fill', '#000');
         }
@@ -120,6 +123,7 @@ var Menu = new Class({
         var currentMenuSelection = 0;
         var changeMenuSelection = function () {
             this.clearMenuColor();
+            this.menuRects[currentMenuSelection].attr('stroke-width', "10");
             this.menuRects[currentMenuSelection].attr('fill', this.options.menuHoverColor);
             this.menuTexts[currentMenuSelection].attr('fill', '#fff');
             currentMenuSelection = (currentMenuSelection == this.nbMenu - 1 ? 0 : currentMenuSelection + 1);
