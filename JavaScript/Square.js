@@ -20,11 +20,7 @@ var Square = new Class({
         this.el = this.rect[0];
         this.pattenURL = (numNote + 1);
         this.rect.attr('fill', 'url(patterns/pat' + this.pattenURL + '.png)');        
-        this.rect.hover(function(){
-          this.attr('stroke-width', "25");
-        },function (){
-          this.attr('stroke-width', "1");        
-        }, this.rect, this.rect);
+        this.rect.hover(this.select, this.deselect, this, this);
 
         this.sound = new Sound(NOTES[nbNote][numNote]);
         // this.rect[0].addEvent('click', this.sound.playSound.bind(this.sound));
@@ -65,6 +61,13 @@ var Square = new Class({
             }.bind(this), this.options.animationTime);
 
         this.sound.playSound();
+    },
+    
+    select: function() {
+        this.rect.attr('stroke-width', "25");
+    }, 
+    deselect: function() {
+        this.rect.attr('stroke-width', "1");
     }
   
 });
