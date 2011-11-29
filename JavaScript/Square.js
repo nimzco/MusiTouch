@@ -21,7 +21,7 @@ var Square = new Class({
         this.pattenURL = (numNote + 1);
         this.rect.attr('fill', 'url(patterns/pat' + this.pattenURL + '.png)');        
         this.rect.hover(function(){
-          this.attr('stroke-width', "10");
+          this.attr('stroke-width', "25");
         },function (){
           this.attr('stroke-width', "1");        
         }, this.rect, this.rect);
@@ -44,7 +44,7 @@ var Square = new Class({
         this.text.attr('stroke', "#000");
         this.text.attr('stroke-width', "3");
         this.text.hover(function(){
-          this.attr('stroke-width', "10");
+          this.attr('stroke-width', "25");
         },function (){
           this.attr('stroke-width', "1");        
         }, this.rect, this.rect);
