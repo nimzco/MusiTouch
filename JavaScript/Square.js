@@ -5,10 +5,14 @@ var Square = new Class({
     options: {
         color         : '#ce168e',
         fontSize      : .6,
-        animationTime : 200
+        animationTime : 200,
+        freegame      : false
     }, 
     initialize: function(paper, numNote, nbNote, options) {
         this.setOptions(options);
+        if (this.options.freegame) {
+            nbNote = 0;
+        }
         var audioWrapper = document.getElementById('audio_wrapper');
         this.note = NOTES[nbNote][numNote];
         this.paper = paper;

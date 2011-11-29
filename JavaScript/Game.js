@@ -15,7 +15,8 @@ var Game = new Class({
         window.NOTES = {
             4 : ['Sol', 'La', 'Si', 'Fa'],
             6 : ['Sol_g', 'Si_g', 'Do', 'Fa_g', 'Fa_g#', 'La'],
-            12: ['Do', 'Re_g#', 'Mi_g', 'Re#', 'Mi', 'Fa_g', 'Fa_g#','Sol_g', 'Si_g', 'La', 'La_g#', 'Si_g']
+            12: ['Do', 'Re_g#', 'Mi_g', 'Re#', 'Mi', 'Fa_g', 'Fa_g#','Sol_g', 'Si_g', 'La', 'La_g#', 'Si_g'], 
+            0: ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si']
         };
         window.MELODIES = {
             4 : [['Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*', 'Sol', 'Sol', 'Sol', 'La', 'Si+', 'La+', 'Sol', 'Si', 'La', 'La', 'Sol*' ] /* AU clair de la lune*/
@@ -45,7 +46,7 @@ var Game = new Class({
         this.paper.clear();
         this.squares = []
         for (var i = 0; i < this.nbSquare; i += 1) {
-            var tmpSquare = new Square(this.paper, i, this.nbSquare, {color: COLORS[i]});
+            var tmpSquare = new Square(this.paper, i, this.nbSquare, {color: COLORS[i], freegame: this.options.freegame});
             this.squares.push(tmpSquare);
         }
         this.draw();
