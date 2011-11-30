@@ -10,7 +10,7 @@ var Sound = new Class({
         this.setOptions(options);
         this.note = note.contains('#') ? note.substr(0, note.length - 1) + "_d" : note;
         this.sound = new buzz.sound( "sounds/" + this.note, {
-          formats: [ "mp3" ],
+          formats: [ "mp3", "wav"],
           preload: true
         });
         this.first = true;
