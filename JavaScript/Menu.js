@@ -19,14 +19,14 @@ var Menu = new Class({
      */
     initialize: function(menuNames, paper, options){
         this.setOptions(options);
+        this.usingKey = false;
         this.changeMenuTimeoutID;
         this.menuNames = menuNames;
         this.nbMenu    = menuNames.length;
         this.paper     = paper; 
         this.draw();
         this.currentSelectedMenu = 0;
-        window.onresize = this.draw.bind(this);
-
+        window.onresize = this.reinitialize;
         this.handleMouseOver();
 
         this.launchChangeMenuSelection();
@@ -88,13 +88,11 @@ var Menu = new Class({
         // Hereafter, 'this' refers to the menu rectangle itselfs (Raphael's element)
         var hoverIn = function(menuIndex) {
             this.clearMenuColor();
-            this.menuRects[menuIndex].attr('stroke-width', "10");
-            this.menuRects[menuIndex].attr('fill', this.options.menuHoverColor);
-            this.menuTexts[menuIndex].attr('fill', '#fff');
+            this.select(menuIndex);
             clearInterval(this.changeMenuTimeoutID)
         };
         var hoverOut = function(menuIndex) {
-            this.menuRects[menuIndex].attr('stroke-width', "1");
+            this.deselect(menuIndex);
             this.clearMenuColor();
             this.launchChangeMenuSelection();
         };
@@ -105,15 +103,28 @@ var Menu = new Class({
             this.menuTexts[i].hover(hoverIn.bind(this, i), hoverOut.bind(this, i));
         }
     },
+    
+    select: function(menuIndex) {
+        this.menuRects[menuIndex].attr('stroke-width', "10");
+        this.menuRects[menuIndex].attr('fill', this.options.menuHoverColor);
+        this.menuTexts[menuIndex].attr('fill', '#fff');
+    },
+
+    deselect: function(menuIndex) {
+        this.menuRects[menuIndex].attr('stroke-width', "1");
+        this.menuRects[menuIndex].attr('fill', this.options.menuColor); 
+        this.menuTexts[menuIndex].attr('fill', '#000');
+    },
 
     /*
      * Clear the 'hover color' of all the menus
      */
     clearMenuColor: function () {
         for (var i = 0; i < this.nbMenu; i += 1) { 
-	        this.menuRects[i].attr('stroke-width', "1");
-            this.menuRects[i].attr('fill', this.options.menuColor);
-            this.menuTexts[i].attr('fill', '#000');
+            this.deselect(i);
+	        //this.menuRects[i].attr('stroke-width', "1");
+            //this.menuRects[i].attr('fill', this.options.menuColor);
+            //this.menuTexts[i].attr('fill', '#000');
         }
     },
     /*
@@ -122,12 +133,14 @@ var Menu = new Class({
     launchChangeMenuSelection: function () {
         var currentMenuSelection = 0;
         var changeMenuSelection = function () {
-            this.clearMenuColor();
-            this.menuRects[currentMenuSelection].attr('stroke-width', "10");
-            this.menuRects[currentMenuSelection].attr('fill', this.options.menuHoverColor);
-            this.menuTexts[currentMenuSelection].attr('fill', '#fff');
-            currentMenuSelection = (currentMenuSelection == this.nbMenu - 1 ? 0 : currentMenuSelection + 1);
-            this.currentSelectedMenu = (currentMenuSelection === 0 ? 4 : currentMenuSelection - 1); // Some problems due to the setInterval
+            if (!this.usingKey) {
+                this.clearMenuColor();
+                this.menuRects[currentMenuSelection].attr('stroke-width', "10");
+                this.menuRects[currentMenuSelection].attr('fill', this.options.menuHoverColor);
+                this.menuTexts[currentMenuSelection].attr('fill', '#fff');
+                currentMenuSelection = (currentMenuSelection == this.nbMenu - 1 ? 0 : currentMenuSelection + 1);
+                this.currentSelectedMenu = (currentMenuSelection === 0 ? 4 : currentMenuSelection - 1); // Some problems due to the setInterval                
+            }
         }.bind(this);
         this.changeMenuTimeoutID = setInterval(changeMenuSelection, this.options.menuIntervalTime);
     },
@@ -155,7 +168,13 @@ var Menu = new Class({
         $(this.menuRects[3][0]).addEvent('touchstart', function() { new Game(12, paper);});
         $(this.menuTexts[3][0]).addEvent('touchstart', function() { new Game(12, paper); });
 
-        $(document.body).addEvent('keydown', function(event) {
+        $(this.menuRects[4][0]).addEvent('click',      this.showInstruction);
+        $(this.menuTexts[4][0]).addEvent('click',      this.showInstruction);
+        $(this.menuRects[4][0]).addEvent('touchstart', this.showInstruction);
+        $(this.menuTexts[4][0]).addEvent('touchstart', this.showInstruction);
+        
+
+        this.keyDownFunctionEvent = function(event) {
             if (event.key == 'space' || event.key == 'enter') {
                 switch(this.currentSelectedMenu) {
                     case 0: 
@@ -170,11 +189,46 @@ var Menu = new Class({
                     case 3: 
                         new Game(12, paper);
                         break;
+                    case 4:
+                        this.showInstruction();
+                        break;
                 }
             }
-        }.bind(this));
+            if (event.key == 'up' || event.key == 'down') {
+                this.usingKey = true;
+                this.deselect(this.currentSelectedMenu);
+            }
+            if        (event.key == 'down') {
+                this.currentSelectedMenu += 1;
+            } else if (event.key == 'up') {
+                if (this.currentSelectedMenu == 0) {
+                    this.currentSelectedMenu = this.nbMenu - 1;
+                } else {
+                    this.currentSelectedMenu -= 1;
+                }
+            }
+            if (event.key == 'up' || event.key == 'down') {
+                this.currentSelectedMenu = this.currentSelectedMenu % this.nbMenu;
+                this.select(this.currentSelectedMenu);
+            }
 
+        }.bind(this);
+        $(document.body).addEvent('keydown', this.keyDownFunctionEvent);
+    },
 
+    showInstruction: function() {
+        paper.clear();
+        var sound = new Sound('Instruction', 'Instruction');
+        sound.playSound();
+        var noticeScreen = paper.rect(0,0,window.innerWidth, window.innerHeight);
+        noticeScreen.attr('fill', '#ddd');
+        var notice1 = paper.text(window.innerWidth / 2, window.innerHeight / 6, "Ecoute, Regarde");
+        var notice2 = paper.text(window.innerWidth / 2, (window.innerHeight / 6) * 2, "Puis répète ce que joue");
+        var notice3 = paper.text(window.innerWidth / 2, (window.innerHeight / 6) * 3, "l'ordinateur");
+        var notice4 = paper.text(window.innerWidth / 2, (window.innerHeight / 6) * 5, "ECHAP pour quitter");
+        notice1.attr('font-size', window.innerWidth * .08);
+        notice2.attr('font-size', window.innerWidth * .08);
+        notice3.attr('font-size', window.innerWidth * .08);
+        notice4.attr('font-size', window.innerWidth * .08);
     }
-
 });

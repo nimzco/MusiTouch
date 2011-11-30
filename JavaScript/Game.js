@@ -8,10 +8,11 @@ var Game = new Class({
         timeBetweenNotes: 500, // in ms
         freegame        : false,
         totalTime       : 0,
-        nextTime       : 0
+        nextTime        : 0,
+        noticeTime      : 1000
     }, 
     initialize: function(nbSquare, paper, options){
-        
+        $(document.body).removeEvent('keydown', musiTouch.menu.keyDownFunctionEvent);
         window.NOTES = {
             4 : ['Sol', 'La', 'Si', 'Fa'],
             6 : ['Sol_g', 'Si_g', 'Do', 'Fa_g', 'Fa_g#', 'La'],
@@ -37,9 +38,13 @@ var Game = new Class({
         this.melodyNumber = 0 /* Math.floor(Math.random() * MELODIES[nbSquare].length); */
         // Refers where it has stopped in the melody
         this.first = true;
-        this.progression = 1;
+        switch(nbSquare) {
+            case 4: this.progression = 1; break
+            case 6: this.progression = 2; break
+            case 12:this.progression = 3; break
+        }
         window.COLORS = ["#FF0000", "#FF9900", "#FFFF00", "#00EE00", "#2200CC", "#8800CC", "#009E00", "#00BFFF", "#ff0d9a", "#0060e6", "#bfff00", "#0000FF"];
-        window.COLORS.sort(Math.round(Math.random()) - 0.5);
+        //window.COLORS.sort(Math.round(Math.random()) - 0.5);
         this.setOptions(options);
         this.nbSquare = nbSquare;
         this.paper    = paper;
@@ -52,24 +57,13 @@ var Game = new Class({
         this.draw();
         window.onresize = this.draw.bind(this);
         if (this.options.freegame) {
-            for (var i = 0; i < this.squares.length; i += 1) {
-                this.squares[i].el.addEvent('click', function(i) {
-                    this.squares[i].play();
-                }.bind(this,i));
-                this.squares[i].el.addEvent('touchstart', function(i) {
-                    this.squares[i].play();
-                }.bind(this,i));
-                this.squares[i].text[0].addEvent('click', function(i) {
-                    this.squares[i].play();
-                }.bind(this,i));
-                this.squares[i].text[0].addEvent('touchstart', function(i) {
-                    this.squares[i].play();
-                }.bind(this,i));
-            }
-            
+            this.handleClick();
         } else {
             this.play();            
         }
+        this.lastSelectedIndex = 0;
+        this.squares[this.lastSelectedIndex].select();
+        this.handleKeyboard();
     }, 
     
     giveMeTheNote: function(note) {
@@ -115,47 +109,53 @@ var Game = new Class({
                     if (!this.isPlaying) {
                         // Play the sound when clicked
                         this.squares[i].play();
-                        // Check if the player has touched the right square
-                        // Note that has to be played
-                        var indexOfNoteToBePlayed = NOTES[this.nbSquare].indexOf(this.giveMeTheNote(MELODIES[this.nbSquare][this.melodyNumber][this.currentAdvance]))
-                        if (this.squares[i] === this.squares[indexOfNoteToBePlayed]) {
-                            this.currentAdvance += 1;
-                            // Then the user has finished the song.
-                            if (this.currentAdvance === this.progression && this.progression == MELODIES[this.nbSquare][this.melodyNumber].length) {
-                                setTimeout(this.showNotice.pass('Vous avez gagnez !'), 500);
-                                var sound = new buzz.sound( "sounds/mission2", {
-                                  formats: [ "mp3" ],
-                                  preload: true
-                                });
-                                sound.play();
-                                setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 60000);
-                            } // Else, if he has just played correctly the notes
-                            else if (this.currentAdvance === this.progression) {
-                                switch(this.nbSquare) {
-                                    case 4: this.progression += 1; break
-                                    case 6: this.progression += 2; break
-                                    case 12:this.progression += 3; break
-                                }
-                                
-                                setTimeout(this.play.bind(this), 1000);
-                                this.currentAdvance = 0;
-                                setTimeout(this.showNotice.pass("Bien joué !"), 400);
-                                // TODO Show "Well done"
-                            }
-                        } else {
-                            this.currentAdvance = 0;
-                            this.isPlaying = true;
-                            setTimeout(this.play.bind(this), 1000);
-                            setTimeout(this.showNotice.pass("Recommence"), 400);
-                            // TODO Show "Try Again"
-                        }
+                        this.amIRight(i);
                     }
                 }.bind(this, i);
-                this.squares[i].el.addEvent('click', onClickFunction);
-                this.squares[i].text[0].addEvent('click', onClickFunction);
+                this.squares[i].el.     addEvent('click',       onClickFunction);
+                this.squares[i].el.     addEvent('touchstart',  onClickFunction);
+                this.squares[i].text[0].addEvent('click',       onClickFunction);
+                this.squares[i].text[0].addEvent('touchstart',  onClickFunction);
             }
         }
         this.first = false;
+    },
+    
+    amIRight: function(squareIndex) {
+        // Check if the player has touched the right square
+        // Note that has to be played
+        var indexOfNoteToBePlayed = NOTES[this.nbSquare].indexOf(this.giveMeTheNote(MELODIES[this.nbSquare][this.melodyNumber][this.currentAdvance]))
+        if (this.squares[squareIndex] === this.squares[indexOfNoteToBePlayed]) {
+            this.currentAdvance += 1;
+            // Then the user has finished the song.
+            if (this.currentAdvance === this.progression && this.progression == MELODIES[this.nbSquare][this.melodyNumber].length) {
+                setTimeout(this.showNotice.pass('Vous avez gagnez !', this), 500);
+                var sound = new buzz.sound( "sounds/mission2", {
+                  formats: [ "mp3" ],
+                  preload: true
+                });
+                sound.play();
+                setTimeout(window.musiTouch.menu.reinitialize.bind(window.musiTouch.menu), 60000);
+            } // Else, if he has just played correctly the notes
+            else if (this.currentAdvance === this.progression) {
+                switch(this.nbSquare) {
+                    case 4: this.progression += 1; break
+                    case 6: this.progression += 2; break
+                    case 12:this.progression += 3; break
+                }
+                
+                setTimeout(this.play.bind(this), this.options.noticeTime + 500);
+                this.currentAdvance = 0;
+                setTimeout(this.showNotice.pass("Bien joué !", this), 400);
+                // TODO Show "Well done"
+            }
+        } else {
+            this.currentAdvance = 0;
+            this.isPlaying = true;
+            setTimeout(this.play.bind(this), this.options.noticeTime + 500);
+            setTimeout(this.showNotice.pass("Recommence", this), 400);
+            // TODO Show "Try Again"
+        }  
     },
     
     showNotice: function (text) {
@@ -166,7 +166,7 @@ var Game = new Class({
         setTimeout(function() {
             noticeScreen.remove();
             notice.remove();
-        }, 500);
+        }, this.options.noticeTime);
     },
     
     /*
@@ -201,5 +201,50 @@ var Game = new Class({
                this.squares[currentSquare].drawTextInsideRect();
            }
        }
+       this.handleClick();
+    },
+    
+    handleClick: function() {
+        for (var i = 0; i < this.squares.length; i += 1) {
+            this.squares[i].el.     addEvent('click',       function(i) {this.squares[i].play();}.bind(this,i));
+            this.squares[i].el.     addEvent('touchstart',  function(i) {this.squares[i].play();}.bind(this,i));
+            this.squares[i].text[0].addEvent('click',       function(i) {this.squares[i].play();}.bind(this,i));
+            this.squares[i].text[0].addEvent('touchstart',  function(i) {this.squares[i].play();}.bind(this,i));
+        }
+    },
+    
+    handleKeyboard: function() {
+        $(document.body).addEvent('keydown', function(event) {
+            if (event.key == 'space' || event.key == 'enter') {
+                if (this.options.freegame) {
+                    this.squares[this.lastSelectedIndex].play();
+                } else if (!this.options.freegame && !this.isPlaying){
+                    this.squares[this.lastSelectedIndex].play();
+                    this.amIRight(this.lastSelectedIndex);
+                }
+            } else {
+                var nbOfSquarePerLines = this.nbSquare / Math.round(Math.sqrt(this.nbSquare))
+                var newIndex = this.lastSelectedIndex;
+                if        (event.key == 'down') {
+                    newIndex += nbOfSquarePerLines;
+                } else if (event.key == 'up') {
+                    newIndex -= nbOfSquarePerLines;
+                } else if (event.key == 'right') {
+                    newIndex += 1;
+                } else if (event.key == 'left') {
+                    if (newIndex == 0) {
+                        newIndex = this.nbSquare - 1;
+                    } else {
+                        newIndex -= 1;                        
+                    }
+                }
+                newIndex = newIndex % this.nbSquare;
+                if (event.key == 'down' || event.key == 'up' || event.key == 'right' || event.key == 'left') {
+                    this.squares[this.lastSelectedIndex].deselect();
+                    this.lastSelectedIndex = newIndex;
+                    this.squares[this.lastSelectedIndex].select();
+                }
+            }
+        }.bind(this));
     }
 });
