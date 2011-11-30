@@ -218,9 +218,11 @@ var Menu = new Class({
 
     showInstruction: function() {
         paper.clear();
+        var sound = new Sound('Instruction', 'Instruction');
+        sound.playSound();
         var noticeScreen = paper.rect(0,0,window.innerWidth, window.innerHeight);
         noticeScreen.attr('fill', '#ddd');
-        var notice1 = paper.text(window.innerWidth / 2, window.innerHeight / 6, "Ecoute ou Regarde");
+        var notice1 = paper.text(window.innerWidth / 2, window.innerHeight / 6, "Ecoute, Regarde");
         var notice2 = paper.text(window.innerWidth / 2, (window.innerHeight / 6) * 2, "Puis répète ce que joue");
         var notice3 = paper.text(window.innerWidth / 2, (window.innerHeight / 6) * 3, "l'ordinateur");
         var notice4 = paper.text(window.innerWidth / 2, (window.innerHeight / 6) * 5, "ECHAP pour quitter");
