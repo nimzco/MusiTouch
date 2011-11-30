@@ -5,8 +5,8 @@ var Square = new Class({
     options: {
         color         : '#ce168e',
         fontSize      : .6,
-        animationTime : 200,
-        freegame      : false
+        animationTime : 250,
+        freegame      : false,
     }, 
     initialize: function(paper, numNote, nbNote, options) {
         this.setOptions(options);
@@ -58,9 +58,11 @@ var Square = new Class({
         this.text.attr('opacity', "1");
         //this.text.animate({opacity: 1}, this.options.animationTime)        
         this.rect.attr('fill', 'url(patterns/white.png)');        
+        this.rect.attr('stroke-width', "25");
         setTimeout(function() {
-            this.rect.animate({fill: this.options.color}, this.options.animationTime);
-            this.text.animate({opacity: 0}, this.options.animationTime - 150)
+        	this.rect.attr('stroke-width', "1");
+            this.rect.animate({fill: this.options.color}, this.options.animationTime - 200);
+            this.text.animate({opacity: 0}, this.options.animationTime - 200)
             this.rect.attr('fill', 'url(patterns/pat' + this.pattenURL + '.png)');   
             }.bind(this), this.options.animationTime);
 
