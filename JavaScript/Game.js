@@ -229,6 +229,9 @@ var Game = new Class({
                     newIndex += nbOfSquarePerLines;
                 } else if (event.key == 'up') {
                     newIndex -= nbOfSquarePerLines;
+                    if (newIndex < 0) {
+                        newIndex = this.nbSquare + newIndex;
+                    }
                 } else if (event.key == 'right') {
                     newIndex += 1;
                 } else if (event.key == 'left') {
