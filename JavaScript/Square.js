@@ -4,9 +4,9 @@ var Square = new Class({
 
     options: {
         color         : '#ce168e',
-        fontSize      : .6,
-        animationTime : 250,
-        freegame      : false,
+        fontSize      : .5,
+        animationTime : 200,
+        freegame      : false
     }, 
     initialize: function(paper, numNote, nbNote, options) {
         this.setOptions(options);
@@ -40,7 +40,7 @@ var Square = new Class({
         this.text.attr('stroke', "#000");
         this.text.attr('stroke-width', "3");
         this.text.hover(function(){
-          this.attr('stroke-width', "25");
+          this.attr('stroke-width', "20");
         },function (){
           this.attr('stroke-width', "1");        
         }, this.rect, this.rect);
@@ -54,7 +54,7 @@ var Square = new Class({
         this.text.attr('opacity', "1");
         //this.text.animate({opacity: 1}, this.options.animationTime)        
         this.rect.attr('fill', 'url(patterns/white.png)');        
-        this.rect.attr('stroke-width', "25");
+        this.rect.attr('stroke-width', "20");
         setTimeout(function() {
         	this.rect.attr('stroke-width', "1");
             this.rect.animate({fill: this.options.color}, this.options.animationTime - 200);
@@ -66,7 +66,7 @@ var Square = new Class({
     },
     
     select: function() {
-        this.rect.attr('stroke-width', "25");
+        this.rect.attr('stroke-width', "20");
     }, 
     deselect: function() {
         this.rect.attr('stroke-width', "1");
